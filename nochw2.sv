@@ -48,6 +48,7 @@ module noc_intf (
 	reg [3:0] Alen_cnt, Alen_cnt_d;
 	reg [2:0] Dlen;
 	reg [7:0] Dlen_cnt, Dlen_cnt_d;
+	reg [2:0] cmd, cmd_d, cmd_s, cmd_s_d;
 
 	// Destination ID and Source ID
 	reg [7:0] Dest_ID, Dest_ID_d, Src_ID, Src_ID_d;
@@ -64,7 +65,7 @@ module noc_intf (
 	reg [7:0] data_index, data_index_d;
 
 	// Perm Control
-	reg write_perm, write_perm_d;
+	reg write_perm, write_perm_d, read_perm, read_perm_d;
 	reg [4:0] perm_index, perm_index_d;
 
 	//Control Signal for Read/Write Command
@@ -105,6 +106,7 @@ module noc_intf (
 		Alen_cnt_d = Alen_cnt;
 		Dlen = 0;
 		Dlen_cnt_d = Dlen_cnt;
+		cmd_d = cmd;
 		Dest_ID_d = Dest_ID;
 		Src_ID_d = Src_ID;
 		Addr_d = Addr;
@@ -126,10 +128,12 @@ module noc_intf (
 						3'b001: begin
 							AD_assignment();
 							next_state_r = READ;
+							cmd_d = 3'b001;
 						end
 						3'b010: begin
 							AD_assignment();
 							next_state_r = DEST_R;
+							cmd_d = 3'b010;
 						end
 						3'b101: begin
 							next_state_r = MSG_R;
@@ -139,6 +143,7 @@ module noc_intf (
 			end
 			READ: begin
 				$display("READ STATE%t", $time);
+				next_state_r = MSG_R;
 			end
 			WRITE: begin
 				if (~write_perm) begin
@@ -198,7 +203,12 @@ module noc_intf (
 				if (Alen_cnt == 1) begin
 					Addr_index_d = 0;
 					Alen_cnt_d = 0;
+					if(cmd == 3'b001)
 					next_state_r = WRITE;
+					else begin
+					   next_state_r = IDLE_R;      //read
+					   send_msg_d = 2;             //read response
+					end
 				end
 				$display("Addr[%b] = %b%t", Addr_index, Addr_d[Addr_index], $time);
 			end
@@ -211,27 +221,54 @@ module noc_intf (
 		noc_from_dev_ctl_d = noc_from_dev_ctl;
 		noc_from_dev_data_d = noc_from_dev_data;
 		send_msg_d = send_msg;
+		read_perm_d = read_perm;
+		cmd_s_d = cmd_s;
 		case (current_state_s)
 			IDLE_S: begin
 				case (send_msg)
 					1: begin
 						noc_from_dev_ctl_d = 1;
 						noc_from_dev_data_d = 8'b00000101;
+						cmd_s_d = 3'b101;
 						next_state_s = DEST_S;
 					end
 					2: begin
+					   noc_from_dev_ctl_d = 1;
+					   noc_from_dev_data_d = {rc, 6'b000011};
+					   read_perm_d = 1;
+					   cmd_s_d = 3'b011;
+					   next_state_s = DEST_S;
+					   $display("READ RESP @%t", $time);
 					end
 					3: begin
 						noc_from_dev_ctl_d = 1;
-						/////////////////noc_from_dev_data_d = 8'b00;
-						
+				        noc_from_dev_data_d = {rc, 6'b000100};
+				        cmd_s_d = 3'b100;
+						next_state_s = DEST_S;
+						$display("WR COMMAND RC %b%t", noc_from_dev_data_d, $time);
 					end
 				endcase
 			end
 			READ_RESP: begin
+			     if(~read_perm) begin
+			         data_pkg_d[data_index] = 1;
+			         data_index_d = data_index + 1;
+			     end
+			     if(data_index == 198) begin
+			         read_perm_d = 1;
+			         Actual_data_d = Actual_data + 2;
+			         if(Dlen_cnt != 2) begin
+			             $display("-------------------------%d%t", Dlen_cnt, $time);
+			             rc_d = 2'b10;
+			         end
+			     end
+			     Dlen_cnt_d = Dlen_cnt - 1;
+			     if(Dlen_cnt == 1) begin
+			         Dlen_cnt_d = 0;             //read response
+			         next_state_s = IDLE_S;
+			     end 
 			end
-			WRITE_RESP: begin
-			end
+				
 			MSGADDR: begin
 				noc_from_dev_data_d = 0; // UNCERTAIN
 				next_state_s = MSGDATA;
@@ -245,18 +282,51 @@ module noc_intf (
 				noc_from_dev_ctl_d = 0;
 				noc_from_dev_data_d = Dest_ID;
 				next_state_s = SRC_S;
+				$display("WR COMMAND DE %b%t", noc_from_dev_data_d, $time);
 			end
 			SRC_S: begin
 				noc_from_dev_data_d = Src_ID;
-				next_state_s = MSGADDR;
+				$display("\n SM %d", send_msg);
+				if (send_msg == 1)
+					next_state_s = MSGADDR;
+				else if (send_msg==3 || send_msg==5)
+					next_state_s = DLENGTH_S;
+				$display("WR COMMAND SO %b%t", noc_from_dev_data_d, $time);
 			end
 			DLENGTH_S: begin
+				noc_from_dev_data_d = Actual_data;
+				rc_d = 0;
+				send_msg_d = 0;
+				Actual_data_d = 0;
+				if(cmd_s == 3'b100) next_state_s = IDLE_S;
+				else next_state_s = READ_RESP;      //read data
+				$display("WR COMMAND AL %b%t", noc_from_dev_data_d, $time);
 			end
 		endcase
 	end
-
+    
+    
+    // PUSHOUT AND STOPIN FROM PERM
+	always @ (posedge pushout or negedge stopin) begin
+		if (pushout) begin
+			send_msg_d = 4;
+		end
+		else if (!stopin) begin
+			send_msg_d = 5;
+		end
+	end
+    
+    
 	// PERM CONTROL
 	always @ (posedge clk) begin
+	//maybe latch happens in this block
+	   stopout_d = stopout;
+	   write_perm_d = write_perm;
+	   read_perm_d = read_perm;
+	   perm_index_d = perm_index;
+	   data_pkg_d = data_pkg;
+	   din_d = din;
+	   pushin_d = pushin;
 		if (write_perm) begin
 			firstin_d = (perm_index==0) ? 1 : 0;
 			pushin_d = 1;
@@ -269,6 +339,18 @@ module noc_intf (
 				perm_index_d = 0;
 			end
 			$display("first%b data[%d] = %b", firstin_d, perm_index, din_d);
+		end else if (read_perm) begin
+		      //data_index for package, perm_index for reveive
+		      perm_index_d = firstout ? 0 : perm_index;
+		      if(pushout) begin
+		          data_pkg_d[perm_index] = dout;
+		          perm_index_d = perm_index + 1;
+		          if(perm_index == 24) begin
+		              read_perm_d = 0;
+		              stopout_d = 1;
+		              perm_index_d = 0;
+		          end
+		      end
 		end
 	end
 
@@ -296,9 +378,12 @@ int i = 17;
 			data_pkg <= 0;
 			data_index <= 0;
 			write_perm <= 0;
+			read_perm <= 0;
 			perm_index <= 0;
 			send_msg <= 0;
 			rc <= 0;
+			cmd <= 0;
+			cmd_s <= 0;
 		end
 		else begin
 			current_state_r <= next_state_r;
@@ -311,6 +396,8 @@ int i = 17;
 			din <= din_d;
 			Alen_cnt <= Alen_cnt_d;
 			Dlen_cnt <= Dlen_cnt_d;
+			cmd <= cmd_d;
+			cmd_s <= cmd_s_d;
 			Dest_ID <= Dest_ID_d;
 			Src_ID <= Src_ID_d;
 			Addr <= Addr_d;
@@ -318,6 +405,7 @@ int i = 17;
 			data_pkg <= data_pkg_d;
 			data_index <= data_index_d;
 			write_perm <= write_perm_d;
+			read_perm <= read_perm_d;
 			perm_index <= perm_index_d;
 			send_msg <= send_msg_d;
 			rc <= rc_d;

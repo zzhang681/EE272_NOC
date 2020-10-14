@@ -281,7 +281,7 @@ module noc_intf (
 				end
 				READ_RESP: begin
 					$display("READ RESPONSE, Actual_data_s = %d @%t", Actual_data_s, $time);	//Actual_data_s: how much data left
-					case(Actual_data_s):	//packet: 128 + 64 + 8
+					case(Actual_data_s)	//packet: 128 + 64 + 8
 						199: begin
 							if (data_index_s == 128) begin
 								Actual_data_s_d = 71;
@@ -374,7 +374,7 @@ module noc_intf (
 						next_state_s = IDLE_S;
 					end else if (get_r_w_s == 1) begin
 						$display("READ RESP AL %b%t", noc_from_dev_data_d, $time);
-						case(Actual_data_s):
+						case(Actual_data_s)
 							199: noc_from_dev_data_d = 128;
 							71: noc_from_dev_data_d = 64;
 							7: noc_from_dev_data_d = 8;

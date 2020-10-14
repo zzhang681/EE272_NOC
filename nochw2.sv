@@ -78,6 +78,7 @@ module noc_intf (
 	reg [2:0] send_msg, send_msg_d; // 0:NOP 1:MSG 2:READ 3:WRITE 4:PUSHOUT MSG 5: STOPIN MSG
         reg [1:0] rc, rc_d;
 	reg [7:0] Actual_data_d, Actual_data;
+	reg [7:0] Actual_data_packet, Actual_data_packet_d;	//for write resp
 	reg [7:0] Actual_data_s_d, Actual_data_s;		//number of bytes in read resp
 	reg [7:0] Resp_data, Resp_data_d;
 	reg [7:0] Msg_addr, Msg_addr_d; // Message address(pushout, stopin)
@@ -104,6 +105,9 @@ module noc_intf (
 		endcase
 	endtask
 
+	//always @ (posedge clk) $display("\t\t\t\t\t\t\t\t\t\t\t\t\t\tCSR = %s, NSR = %s, CSS = %s, NSS = %s @%t", current_state_r, next_state_r, current_state_s, next_state_s, $time);
+
+
 	// State Machine for RECEIVING DATA	
 	always @ (*) begin
 		next_state_r = current_state_r;
@@ -125,6 +129,7 @@ module noc_intf (
 		send_msg_d = send_msg;
 		rc_d = rc;
 		Actual_data_d = Actual_data;
+		Actual_data_packet_d = Actual_data_packet;
 		Resp_data_d = Resp_data;
 		Msg_addr_d = Msg_addr;
 		case (current_state_r)
@@ -143,9 +148,10 @@ module noc_intf (
 							next_state_r = DEST_R;
 						end
 						3'b010: begin // GET WRITE
-							$display("WRIIIIIIIIIIIIIIIIIITE COMMAND GET!");
+							$display("WRIIIIIIIIIIIIIIIIIITE COMMAND GET! data is %b", noc_to_dev_data);
 							get_r_w_d = 2;
 							AD_assignment();
+							Actual_data_packet_d = 0;
 							next_state_r = DEST_R;
 						end
 						3'b101: begin
@@ -155,29 +161,35 @@ module noc_intf (
 				end
 			end
 			WRITE: begin
+				//$monitor("I touched WRITE, data_index = %d, Actual_data = %b %t",data_index,Actual_data, $time);
 				if (~data_full) begin
 					data_pkg_d.Dev[data_index] = noc_to_dev_data;
 					data_index_d = data_index + 1;
 					Actual_data_d = Actual_data + 1; // Count the actual data length
+					Actual_data_packet_d = Actual_data_packet + 1;
 				end
 				if (data_index == 199) begin
 					data_index_d = 0;
 					data_full_d = 1;
 					write_perm_d = 1;
 					Actual_data_d = Actual_data + 1;
+					Actual_data_packet_d = Actual_data_packet + 1;
 					if (Dlen_cnt != 1) begin
 						$display("PARTIAL READ %d%t", Dlen_cnt, $time);
 						rc_d = 2'b10;
+						Actual_data_packet_d = 0;
 					end
+					next_state_r = IDLE_R;
 				end
 				Dlen_cnt_d = Dlen_cnt - 1;
 				if (Dlen_cnt == 1) begin
 					Dlen_cnt_d = 0;
+					//Actual_data_packet_d = 0;
 					if (rc!=1 && rc!=2) rc_d = 0;
-					send_msg_d = 3; // Write Response
+					//send_msg_d = 3; // Write Response
 					next_state_r = IDLE_R;
 				end
-				$display("write_perm:%b  WRITEDATA[%d] = %b%t", write_perm, data_index, data_pkg_d.Dev[data_index], $time);
+				$display("write_perm:%b  WRITEDATA[%d] = %b, Actual_data %d, Actual_data_packet = %d, data_full?: %d, Dlen_cnt = %d, %t", write_perm, data_index, data_pkg_d.Dev[data_index], Actual_data, Actual_data_packet, data_full, Dlen_cnt, $time);
 			end
 			MSG_R: begin
 				$display("MSG STATE%t", $time);
@@ -187,7 +199,8 @@ module noc_intf (
 					$display("ERROR IN STATEMACHINE%t", $time);
 				end
 				else begin
-*/				if (noc_to_dev_data) begin	
+*/				if (noc_to_dev_data) begin
+					$display("DEST_R,data is %b @%t",noc_to_dev_data, $time);	
 					Dest_ID_d = noc_to_dev_data;
 					next_state_r = SRC_R;
 				end
@@ -228,7 +241,7 @@ module noc_intf (
 						$display("GET READ OR WRITE ERROR");
 					end
 				end
-				$display("Addr[%b] = %b%t", Addr_index, Addr_d[Addr_index], $time);
+				$display("Addr[%b] = %b,%t", Addr_index, Addr_d[Addr_index], $time);
 			end
 		endcase
 	end
@@ -335,9 +348,9 @@ module noc_intf (
 					noc_from_dev_ctl_d = 0;
 					noc_from_dev_data_d = Src_ID; /////////////////////
 					next_state_s = SRC_S;
-					if (get_r_w_s == 2) $display("WR RESP DE %b%t", noc_from_dev_data_d, $time);
+					if (get_r_w_s == 0) $display("WR RESP DE %b%t", noc_from_dev_data_d, $time);
 					else if (get_r_w_s == 1) $display("READ RESP DE %b%t", noc_from_dev_data_d, $time);
-					else $display("Error. No such case. DEST_S %b%t", noc_from_dev_data_d, $time);
+					else $display("Error. No such case. DEST_S %b, get_r_w_s = %d, %t", noc_from_dev_data_d,get_r_w_s, $time);
 				end
 				SRC_S: begin
 					noc_from_dev_data_d = Dest_ID;  /////////////////////
@@ -351,7 +364,7 @@ module noc_intf (
 						next_state_s = DLENGTH_S;
 					end
 					//$display("WR RESP SO %b%t", noc_from_dev_data_d, $time);
-					if (get_r_w_s == 2) $display("WR RESP SO %b%t", noc_from_dev_data_d, $time);
+					if (get_r_w_s == 0) $display("WR RESP SO %b%t", noc_from_dev_data_d, $time);
 					else if (get_r_w_s == 1) $display("READ RESP SO %b%t", noc_from_dev_data_d, $time);
 					else $display("Error. No such case. SRC_S %b%t", noc_from_dev_data_d, $time);
 				end
@@ -365,12 +378,11 @@ module noc_intf (
 						send_msg_d = 0;
 					end
 					//Actual_data_d = 0;
-					//$display("WR RESP AL %b%t",noc_from_dev_data_d, $time);
-					if (get_r_w_s == 2) begin
-						$display("WR RESP AL %b%t", noc_from_dev_data_d, $time);
+					$display("W/R RESP AL %b, get_r_w_s = %d, Actual_data_packet = %d, %t",noc_from_dev_data_d, get_r_w_s, Actual_data_packet, $time);
+					if (get_r_w_s == 0) begin
+						//$display("WR RESP AL %b%t", noc_from_dev_data_d, $time);
 						rc_d = 0;
-						noc_from_dev_data_d = Actual_data;
-						Actual_data_d = 0;
+						noc_from_dev_data_d = Actual_data_packet;
 						next_state_s = IDLE_S;
 					end else if (get_r_w_s == 1) begin
 						$display("READ RESP AL %b%t", noc_from_dev_data_d, $time);
@@ -385,6 +397,8 @@ module noc_intf (
 						$display("Error. No such case. DLENGTH_S %b%t", noc_from_dev_data_d, $time);
 						next_state_s = IDLE_S;
 					end
+					Actual_data_d = 0;
+					//Actual_data_packet_d = 0;
 				end
 			endcase
 		end
@@ -400,18 +414,32 @@ module noc_intf (
 
 	// PERM CONTROL
 	always @ (posedge clk) begin
+		//condition for stopin or something is still to be added
 		if (write_perm) begin
+			stopout_d = 0;
 			firstin_d = (perm_index==0) ? 1 : 0;
 			pushin_d = 1;
-			din_d = data_pkg.Per[perm_index];
+			//din_d = data_pkg.Per[perm_index];
+
+			din_d[7:0] = data_pkg.Dev[perm_index*8];
+			din_d[15:8] = data_pkg.Dev[perm_index*8+1];
+			din_d[23:16] = data_pkg.Dev[perm_index*8+2];
+			din_d[31:24] = data_pkg.Dev[perm_index*8+3];
+			din_d[39:32] = data_pkg.Dev[perm_index*8+4];
+			din_d[47:40] = data_pkg.Dev[perm_index*8+5];
+			din_d[55:48] = data_pkg.Dev[perm_index*8+6];
+			din_d[63:56] = data_pkg.Dev[perm_index*8+7];
+
 			//////// WRITE TO PERM
-//			$display("stopin%b first%b push%b data[%d] = %h%t", stopin, firstin_d, pushin_d, perm_index, din_d, $time);
+			$display("stopin%b first%b push%b data[perm_index:%d] = %h%t", stopin, firstin_d, pushin_d, perm_index, din_d, $time);
 			perm_index_d = perm_index + 1;
-			if (perm_index == 24) begin
+			data_index_d = data_index - 8;
+			if (perm_index == 24 || data_index <= 8) begin
 				write_perm_d = 0;
 				pushin_d = 0;
 				din_d = 0;
 				perm_index_d = 0;
+				send_msg_d = 3;		//write response
 			end
 		end
 		if (read_perm) begin
@@ -484,6 +512,7 @@ int i = 41;
 			send_msg <= 0;
 			rc <= 0;
 			Actual_data <= 0;
+			Actual_data_packet <= 0;
 			Actual_data_s <= 0;
 			Resp_data <= 0;
 			Msg_addr <= 0;
@@ -516,6 +545,7 @@ int i = 41;
 			send_msg <= send_msg_d;
 			rc <= rc_d;
 			Actual_data <= Actual_data_d;
+			Actual_data_packet <= Actual_data_packet_d;
 			Actual_data_s <= Actual_data_s_d;
 			Resp_data <= Resp_data_d;
 			Msg_addr <= Msg_addr_d;

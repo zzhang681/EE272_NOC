@@ -516,7 +516,7 @@ int i = 41;
 			send_msg <= send_msg_d;
 			rc <= rc_d;
 			Actual_data <= Actual_data_d;
-			Actual_data_s <= Actual_data_S_d;
+			Actual_data_s <= Actual_data_s_d;
 			Resp_data <= Resp_data_d;
 			Msg_addr <= Msg_addr_d;
 

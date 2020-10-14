@@ -60,6 +60,8 @@ module noc_intf (
 		reg [24:0][63:0] Per; // To/from Perm block
 	} data_pkg, data_pkg_d;
 	reg [7:0] data_index, data_index_d;
+	reg [7:0] data_index_s, data_index_s_d;
+	reg [6:0] pkt_data_len, pkt_data_len_d;	//data packet length for read response
 	reg data_full, data_full_d; // Indicate a full set of 200 byte data
 
 	// Perm Control
@@ -69,12 +71,14 @@ module noc_intf (
 
 	//Control Signal for Read/Write Command
 	reg [1:0] get_r_w, get_r_w_d; // Get message 0:nothing 1:read 2:write
+	reg [1:0] get_r_w_s, get_r_w_s_d; // Get message 0:nothing 1:read 2:write
 	reg Get_DID, Get_SID;
 
 	//Control Signal for Read/Write Response, Message
 	reg [2:0] send_msg, send_msg_d; // 0:NOP 1:MSG 2:READ 3:WRITE 4:PUSHOUT MSG 5: STOPIN MSG
-        reg [1:0] rc, rc_d;	
+        reg [1:0] rc, rc_d;
 	reg [7:0] Actual_data_d, Actual_data;
+	reg [7:0] Actual_data_s_d, Actual_data_s;		//number of bytes in read resp
 	reg [7:0] Resp_data, Resp_data_d;
 	reg [7:0] Msg_addr, Msg_addr_d; // Message address(pushout, stopin)
 	reg Send_SID, Send_data;
@@ -235,6 +239,10 @@ module noc_intf (
 //		noc_from_dev_ctl_d = noc_from_dev_ctl;
 //		noc_from_dev_data_d = noc_from_dev_data;
 //		send_msg_d = send_msg;
+		pkt_data_len_d = pkt_data_len;
+		Actual_data_s_d = Actual_data_s;
+		data_index_s_d = data_index_s;
+		get_r_w_s_d = get_r_w_s;
 		if (send_msg) begin
 			//////// Routing responses
 //			$display("-----------send msg %b %b", send_msg, current_state_s);
@@ -245,25 +253,71 @@ module noc_intf (
 							noc_from_dev_ctl_d = 1;
 							noc_from_dev_data_d = 8'b00000101;
 							next_state_s = DEST_S;
+							get_r_w_s_d = 2;
 							$display("MSG ALDL %b%t", noc_from_dev_data_d, $time);
 						end
 						2: begin
+							noc_from_dev_ctl_d = 1;
+							noc_from_dev_data_d = {rc, 6'b000011};
+							next_state_s = DEST_S;
+							get_r_w_s_d = 1;
+							$display("READ RSP RC %b%t", noc_from_dev_data_d, $time);
 						end
 						3: begin
 							noc_from_dev_ctl_d = 1;
 							noc_from_dev_data_d = {rc, 6'b000100};
 							next_state_s = DEST_S;
+							get_r_w_s_d = 0;
 							$display("WR RSP RC %b%t", noc_from_dev_data_d, $time);
 						end
 						5: begin
 							noc_from_dev_ctl_d = 1;
 							noc_from_dev_data_d = 8'b00000101;
 							next_state_s = DEST_S;
+							get_r_w_s_d = 0;
 							$display("EEEEEEEEEEEEEEERRRRRRRRRRRRRR");
 						end
 					endcase
 				end
 				READ_RESP: begin
+					$display("READ RESPONSE, Actual_data_s = %d @%t", Actual_data_s, $time);	//Actual_data_s: how much data left
+					case(Actual_data_s):	//packet: 128 + 64 + 8
+						199: begin
+							if (data_index_s == 128) begin
+								Actual_data_s_d = 71;
+								rc_d = 2;
+								next_state_s = IDLE_S;
+							end else begin
+								noc_from_dev_data_d = data_pkg.Dev[data_index_s];
+								data_index_s_d = data_index_s + 1;
+								next_state_s = READ_RESP;
+							end
+						end
+						71: begin
+							if (data_index_s == 192) begin
+								Actual_data_s_d = 7;
+								rc_d = 2;
+								next_state_s = IDLE_S;
+							end else begin
+								noc_from_dev_data_d = data_pkg.Dev[data_index_s];
+								data_index_s_d = data_index_s + 1;
+								next_state_s = READ_RESP;
+							end
+						end
+						7: begin
+							if (data_index_s == 200) begin
+								Actual_data_s_d = 0;
+								rc_d = 0;
+								next_state_s = IDLE_S;
+								$display("200 bytes data response %t", $time);
+							end else begin
+								noc_from_dev_data_d = data_pkg.Dev[data_index_s];
+								data_index_s_d = data_index_s + 1;
+								next_state_s = READ_RESP;
+							end
+						end
+						default: $display("Error. Actual Data S is %d %t", Actual_data_s, $time);
+					endcase
 				end
 				MSGADDR: begin
 //					noc_from_dev_data_d = 0; // UNCERTAIN
@@ -281,7 +335,9 @@ module noc_intf (
 					noc_from_dev_ctl_d = 0;
 					noc_from_dev_data_d = Src_ID; /////////////////////
 					next_state_s = SRC_S;
-					$display("WR RESP DE %b%t", noc_from_dev_data_d, $time);
+					if (get_r_w_s == 2) $display("WR RESP DE %b%t", noc_from_dev_data_d, $time);
+					else if (get_r_w_s == 1) $display("READ RESP DE %b%t", noc_from_dev_data_d, $time);
+					else $display("Error. No such case. DEST_S %b%t", noc_from_dev_data_d, $time);
 				end
 				SRC_S: begin
 					noc_from_dev_data_d = Dest_ID;  /////////////////////
@@ -294,20 +350,41 @@ module noc_intf (
 					else if (send_msg==3 || send_msg==5) begin
 						next_state_s = DLENGTH_S;
 					end
-					$display("WR RESP SO %b%t", noc_from_dev_data_d, $time);
+					//$display("WR RESP SO %b%t", noc_from_dev_data_d, $time);
+					if (get_r_w_s == 2) $display("WR RESP SO %b%t", noc_from_dev_data_d, $time);
+					else if (get_r_w_s == 1) $display("READ RESP SO %b%t", noc_from_dev_data_d, $time);
+					else $display("Error. No such case. SRC_S %b%t", noc_from_dev_data_d, $time);
 				end
 				DLENGTH_S: begin
-					noc_from_dev_data_d = Actual_data;
-					rc_d = 0;
+					//noc_from_dev_data_d = Actual_data;
+					//rc_d = 0;
 					if (send_msg == 5) begin // Send a following Message
 						send_msg_d = 1;
 					end
 					else begin
 						send_msg_d = 0;
 					end
-					Actual_data_d = 0;
-					next_state_s = IDLE_S;
-					$display("WR RESP AL %b%t",noc_from_dev_data_d, $time);
+					//Actual_data_d = 0;
+					//$display("WR RESP AL %b%t",noc_from_dev_data_d, $time);
+					if (get_r_w_s == 2) begin
+						$display("WR RESP AL %b%t", noc_from_dev_data_d, $time);
+						rc_d = 0;
+						noc_from_dev_data_d = Actual_data;
+						Actual_data_d = 0;
+						next_state_s = IDLE_S;
+					end else if (get_r_w_s == 1) begin
+						$display("READ RESP AL %b%t", noc_from_dev_data_d, $time);
+						case(Actual_data_s):
+							199: noc_from_dev_data_d = 128;
+							71: noc_from_dev_data_d = 64;
+							7: noc_from_dev_data_d = 8;
+							default: noc_from_dev_data_d = 0;
+						endcase
+						next_state_s = READ_RESP;
+					end else begin 
+						$display("Error. No such case. DLENGTH_S %b%t", noc_from_dev_data_d, $time);
+						next_state_s = IDLE_S;
+					end
 				end
 			endcase
 		end
@@ -341,11 +418,29 @@ module noc_intf (
 			stopout_d = 0;
 			if (firstout) begin
 				data_pkg_d.Per[data_index] = dout;
+				data_pkg_d.Dev[Actual_data_s] = dout[7:0];
+				data_pkg_d.Dev[Actual_data_s+1] = dout[15:8];
+				data_pkg_d.Dev[Actual_data_s+2] = dout[23:16];
+				data_pkg_d.Dev[Actual_data_s+3] = dout[31:24];
+				data_pkg_d.Dev[Actual_data_s+4] = dout[39:32];
+				data_pkg_d.Dev[Actual_data_s+5] = dout[47:40];
+				data_pkg_d.Dev[Actual_data_s+6] = dout[55:48];
+				data_pkg_d.Dev[Actual_data_s+7] = dout[63:56];
 				data_index_d = data_index + 1;
+				Actual_data_s_d = Actual_data_s + 8;
 			end
 			else begin
 				data_pkg_d.Per[data_index] = dout;
+				data_pkg_d.Dev[Actual_data_s] = dout[7:0];
+				data_pkg_d.Dev[Actual_data_s+1] = dout[15:8];
+				data_pkg_d.Dev[Actual_data_s+2] = dout[23:16];
+				data_pkg_d.Dev[Actual_data_s+3] = dout[31:24];
+				data_pkg_d.Dev[Actual_data_s+4] = dout[39:32];
+				data_pkg_d.Dev[Actual_data_s+5] = dout[47:40];
+				data_pkg_d.Dev[Actual_data_s+6] = dout[55:48];
+				data_pkg_d.Dev[Actual_data_s+7] = dout[63:56];
 				data_index_d = data_index + 1;
+				Actual_data_s_d = Actual_data_s + 8;
 				if (data_index == 24) begin // PERM READ COMPLETE
 					read_perm_d = 0;
 					stopout_d = 1;
@@ -378,14 +473,18 @@ int i = 41;
 			Addr_index <= 0;
 			data_pkg <= 0;
 			data_index <= 0;
+			data_index_s <= 0;
 			data_full <= 0;
+			pkt_data_len <= 0;
 			write_perm <= 0;
 			read_perm <= 0;
 			perm_index <= 0;
 			get_r_w <= 0;
+			get_r_w_s <= 0;
 			send_msg <= 0;
 			rc <= 0;
 			Actual_data <= 0;
+			Actual_data_s <= 0;
 			Resp_data <= 0;
 			Msg_addr <= 0;
 		end
@@ -406,14 +505,18 @@ int i = 41;
 			Addr_index <= Addr_index_d;
 			data_pkg <= data_pkg_d;
 			data_index <= data_index_d;
+			data_index_s <= data_index_s_d;
 			data_full <= data_full_d;
+			pkt_data_len <= pkt_data_len_d;
 			write_perm <= write_perm_d;
 			read_perm <= read_perm_d;
 			perm_index <= perm_index_d;
 			get_r_w <= get_r_w_d;
+			get_r_w_s <= get_r_w_s_d;
 			send_msg <= send_msg_d;
 			rc <= rc_d;
 			Actual_data <= Actual_data_d;
+			Actual_data_s <= Actual_data_S_d;
 			Resp_data <= Resp_data_d;
 			Msg_addr <= Msg_addr_d;
 

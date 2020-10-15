@@ -287,7 +287,7 @@ module noc_intf (
 							noc_from_dev_ctl_d = 1;
 							noc_from_dev_data_d = 8'b00000101;
 							next_state_s = DEST_S;
-							get_r_w_s_d = 0;
+							get_r_w_s_d = 2;
 							$display("EEEEEEEEEEEEEEERRRRRRRRRRRRRR");
 						end
 					endcase
@@ -419,21 +419,10 @@ module noc_intf (
 			stopout_d = 0;
 			firstin_d = (perm_index==0) ? 1 : 0;
 			pushin_d = 1;
-			//din_d = data_pkg.Per[perm_index];
-			
-			din_d[7:0] = data_pkg.Dev[perm_index*8];
-			din_d[15:8] = data_pkg.Dev[perm_index*8+1];
-			din_d[23:16] = data_pkg.Dev[perm_index*8+2];
-			din_d[31:24] = data_pkg.Dev[perm_index*8+3];
-			din_d[39:32] = data_pkg.Dev[perm_index*8+4];
-			din_d[47:40] = data_pkg.Dev[perm_index*8+5];
-			din_d[55:48] = data_pkg.Dev[perm_index*8+6];
-			din_d[63:56] = data_pkg.Dev[perm_index*8+7];
-
+			din_d = data_pkg.Per[perm_index];
 			//////// WRITE TO PERM
-			$display("stopin%b first%b push%b, data_index = %d, data[perm_index:%d] = %h%t", stopin, firstin_d, pushin_d, data_index,  perm_index, din_d, $time);
+			//$display("stopin%b first%b push%b, data_index = %d, data[perm_index:%d] = %h%t", stopin, firstin_d, pushin_d, data_index,  perm_index, din_d, $time);
 			perm_index_d = perm_index + 1;
-			data_index_d = data_index - 8;
 			if (perm_index == 24) begin
 				write_perm_d = 0;
 				pushin_d = 0;
@@ -445,29 +434,30 @@ module noc_intf (
 		end
 		if (read_perm) begin
 			stopout_d = 0;
+			$display("REEaaaaaaaaaaaaaaaaddddddddddddddddpppppppppppppppppppeeeeeeeeerrrrrrrmmmmmmm %t", $time);
 			if (firstout) begin
 				data_pkg_d.Per[data_index] = dout;
-				data_pkg_d.Dev[Actual_data_s] = dout[7:0];
-				data_pkg_d.Dev[Actual_data_s+1] = dout[15:8];
-				data_pkg_d.Dev[Actual_data_s+2] = dout[23:16];
-				data_pkg_d.Dev[Actual_data_s+3] = dout[31:24];
-				data_pkg_d.Dev[Actual_data_s+4] = dout[39:32];
-				data_pkg_d.Dev[Actual_data_s+5] = dout[47:40];
-				data_pkg_d.Dev[Actual_data_s+6] = dout[55:48];
-				data_pkg_d.Dev[Actual_data_s+7] = dout[63:56];
+				//data_pkg_d.Dev[Actual_data_s] = dout[7:0];
+				//data_pkg_d.Dev[Actual_data_s+1] = dout[15:8];
+				//data_pkg_d.Dev[Actual_data_s+2] = dout[23:16];
+				//data_pkg_d.Dev[Actual_data_s+3] = dout[31:24];
+				//data_pkg_d.Dev[Actual_data_s+4] = dout[39:32];
+				//data_pkg_d.Dev[Actual_data_s+5] = dout[47:40];
+				//data_pkg_d.Dev[Actual_data_s+6] = dout[55:48];
+				//data_pkg_d.Dev[Actual_data_s+7] = dout[63:56];
 				data_index_d = data_index + 1;
 				Actual_data_s_d = Actual_data_s + 8;
 			end
 			else begin
 				data_pkg_d.Per[data_index] = dout;
-				data_pkg_d.Dev[Actual_data_s] = dout[7:0];
-				data_pkg_d.Dev[Actual_data_s+1] = dout[15:8];
-				data_pkg_d.Dev[Actual_data_s+2] = dout[23:16];
-				data_pkg_d.Dev[Actual_data_s+3] = dout[31:24];
-				data_pkg_d.Dev[Actual_data_s+4] = dout[39:32];
-				data_pkg_d.Dev[Actual_data_s+5] = dout[47:40];
-				data_pkg_d.Dev[Actual_data_s+6] = dout[55:48];
-				data_pkg_d.Dev[Actual_data_s+7] = dout[63:56];
+				//data_pkg_d.Dev[Actual_data_s] = dout[7:0];
+				//data_pkg_d.Dev[Actual_data_s+1] = dout[15:8];
+				//data_pkg_d.Dev[Actual_data_s+2] = dout[23:16];
+				//data_pkg_d.Dev[Actual_data_s+3] = dout[31:24];
+				//data_pkg_d.Dev[Actual_data_s+4] = dout[39:32];
+				//data_pkg_d.Dev[Actual_data_s+5] = dout[47:40];
+				//data_pkg_d.Dev[Actual_data_s+6] = dout[55:48];
+				//data_pkg_d.Dev[Actual_data_s+7] = dout[63:56];
 				data_index_d = data_index + 1;
 				Actual_data_s_d = Actual_data_s + 8;
 				if (data_index == 24) begin // PERM READ COMPLETE

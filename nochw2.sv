@@ -420,7 +420,7 @@ module noc_intf (
 			firstin_d = (perm_index==0) ? 1 : 0;
 			pushin_d = 1;
 			//din_d = data_pkg.Per[perm_index];
-
+			
 			din_d[7:0] = data_pkg.Dev[perm_index*8];
 			din_d[15:8] = data_pkg.Dev[perm_index*8+1];
 			din_d[23:16] = data_pkg.Dev[perm_index*8+2];
@@ -431,15 +431,16 @@ module noc_intf (
 			din_d[63:56] = data_pkg.Dev[perm_index*8+7];
 
 			//////// WRITE TO PERM
-			$display("stopin%b first%b push%b data[perm_index:%d] = %h%t", stopin, firstin_d, pushin_d, perm_index, din_d, $time);
+			$display("stopin%b first%b push%b, data_index = %d, data[perm_index:%d] = %h%t", stopin, firstin_d, pushin_d, data_index,  perm_index, din_d, $time);
 			perm_index_d = perm_index + 1;
 			data_index_d = data_index - 8;
-			if (perm_index == 24 || data_index <= 8) begin
+			if (perm_index == 24) begin
 				write_perm_d = 0;
 				pushin_d = 0;
 				din_d = 0;
 				perm_index_d = 0;
 				send_msg_d = 3;		//write response
+				
 			end
 		end
 		if (read_perm) begin

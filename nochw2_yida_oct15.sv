@@ -42,9 +42,9 @@ module noc_intf (
 	reg [63:0] din_d;
 
 	// Address and Data length
-	reg [1:0] Alen;
+	reg [1:0] Alen, Alen_d;
 	reg [3:0] Alen_cnt, Alen_cnt_d;
-	reg [2:0] Dlen;
+	reg [2:0] Dlen, Dlen_d;
 	reg [7:0] Dlen_cnt, Dlen_cnt_d;
 
 	// Destination ID and Source ID
@@ -81,8 +81,8 @@ module noc_intf (
 	reg Send_SID, Send_data;
 	
 	task AD_assignment;
-		Alen = noc_to_dev_data[7:6];
-		Dlen = noc_to_dev_data[5:3];
+		Alen_d = noc_to_dev_data[7:6];
+		Dlen_d = noc_to_dev_data[5:3];
 		case (noc_to_dev_data[7:6])
 			2'b00: Alen_cnt_d = 1;
 			2'b01: Alen_cnt_d = 2;
@@ -104,9 +104,9 @@ module noc_intf (
 	// State Machine for RECEIVING DATA	
 	always @ (*) begin
 		next_state_r = current_state_r;
-		Alen = 0;
+		Alen_d = Alen;
 		Alen_cnt_d = Alen_cnt;
-		Dlen = 0;
+		Dlen_d = Dlen;
 		Dlen_cnt_d = Dlen_cnt;
 		Dest_ID_d = Dest_ID;
 		Src_ID_d = Src_ID;
@@ -129,8 +129,8 @@ module noc_intf (
 		Msg_addr_d = Msg_addr;
 		case (current_state_r)
 			IDLE_R: begin
-				Alen_cnt_d = 0;
-				Dlen_cnt_d = 0;
+//				Alen_cnt_d = 0;
+//				Dlen_cnt_d = 0;
 				data_full_d = 0;
 				if (noc_to_dev_ctl) begin
 					case (noc_to_dev_data[2:0])
@@ -217,6 +217,7 @@ module noc_intf (
 					Alen_cnt_d = 0;
 					if (get_r_w == 1) begin
 						$display("\nREEEEEEEAAAAD REQUEST Complete.\n");
+						$display("Dlen:%d DlenCnt:%d DE%b SRC%b ActualData:%d%t", Dlen, Dlen_cnt, Dest_ID, Src_ID, Actual_data, $time);
 						send_msg_d = 2;
 						read_perm_d = 1; // Signal the perm controller to read perm
 						next_state_r = IDLE_R;
@@ -249,6 +250,16 @@ module noc_intf (
 							$display("MSG ALDL %b%t", noc_from_dev_data_d, $time);
 						end
 						2: begin // Read Response
+							if (data_perm_index+Dlen_cnt > 200) begin // Partial if the data index exceeds 200
+								rc_d = 2'b10;
+							end	
+							else begin
+								rc_d = 2'b00;
+							end
+							noc_from_dev_ctl_d = 1;
+							noc_from_dev_data_d = {rc, 6'b000011};
+							next_state_s = DEST_S;
+							$display("READ RESP RC %b%t", noc_from_dev_data_d, $time);
 						end
 						3: begin // Write Response
 							noc_from_dev_ctl_d = 1;
@@ -260,7 +271,7 @@ module noc_intf (
 							noc_from_dev_ctl_d = 1;
 							noc_from_dev_data_d = 8'b00000101;
 							next_state_s = DEST_S;
-							$display("MSG ALDL %b%t", noc_from_dev_data_d, $time);
+							$display("MSG POUT %b%t", noc_from_dev_data_d, $time);
 						end
 						5: begin // Stopin Message
 							noc_from_dev_ctl_d = 1;
@@ -271,6 +282,20 @@ module noc_intf (
 					endcase
 				end
 				READ_RESP: begin
+					if (Dlen_cnt) begin
+						noc_from_dev_data_d = data_perm.Dev[data_perm_index]; 
+						$display("RD RSP to NOC[%d] = %b%t", data_perm_index, noc_from_dev_data_d, $time);
+						Dlen_cnt_d = Dlen_cnt - 1;
+						if (data_perm_index != 199) begin
+							data_perm_index_d = data_perm_index + 1;
+						end
+						else begin
+							data_perm_index_d = 0;
+						end
+					end
+					else begin
+						next_state_s = IDLE_S;
+					end
 				end
 				MSGADDR: begin
 //					noc_from_dev_data_d = 0; // UNCERTAIN
@@ -298,6 +323,9 @@ module noc_intf (
 						Resp_data_d = 8'h78;
 						next_state_s = MSGADDR;
 					end
+					else if (send_msg == 2) begin // Read Response
+						next_state_s = DLENGTH_S;
+					end
 					else if (send_msg == 4) begin
 						Msg_addr_d = 8'h17;
 						Resp_data_d = 8'h12;
@@ -309,17 +337,30 @@ module noc_intf (
 					$display("WR RESP SO %b%t", noc_from_dev_data_d, $time);
 				end
 				DLENGTH_S: begin
-					noc_from_dev_data_d = Actual_data;
 					rc_d = 0;
-					if (send_msg == 5) begin // Send a following Message
-						send_msg_d = 1;
+					if (send_msg == 2) begin  // READ RESP
+						if (Actual_data+Dlen_cnt > 200) begin
+							noc_from_dev_data_d = 200 - Actual_data;
+						end
+						else begin
+							noc_from_dev_data_d = Dlen_cnt;
+						end
+						next_state_s = READ_RESP;
+						$display("READ RESP AL %b%t", noc_from_dev_data_d, $time);
 					end
-					else begin
-						send_msg_d = 0;
+					else begin // WRITE RESP
+						noc_from_dev_data_d = Actual_data;
+//						rc_d = 0;
+						if (send_msg == 5) begin // Send a following Message
+							send_msg_d = 1;
+						end
+						else begin
+							send_msg_d = 0;
+						end
+						Actual_data_d = 0;
+						next_state_s = IDLE_S;
+						$display("WR RESP AL %b%t", noc_from_dev_data_d, $time);
 					end
-					Actual_data_d = 0;
-					next_state_s = IDLE_S;
-					$display("WR RESP AL %b%t",noc_from_dev_data_d, $time);
 				end
 			endcase
 		end
@@ -390,7 +431,7 @@ int i = 41;
 			stopout <= 1;
 			noc_from_dev_data <= 0;
 			din <= 0;
-			Alen <= 0;
+			Alen <= 0; 
 			Alen_cnt <= 0;
 			Dlen <= 0;
 			Dlen_cnt <= 0;
@@ -423,7 +464,9 @@ int i = 41;
 			stopout <= stopout_d;
 			noc_from_dev_data <= noc_from_dev_data_d;
 			din <= din_d;
+			Alen <= Alen_d;
 			Alen_cnt <= Alen_cnt_d;
+			Dlen <= Dlen_d;
 			Dlen_cnt <= Dlen_cnt_d;
 			Dest_ID <= Dest_ID_d;
 			Src_ID <= Src_ID_d;

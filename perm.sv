@@ -45,7 +45,6 @@ module perm_blk (
 	reg [5:0] roundc, roundc_d;
 	reg [2:0] rcnum, rcnum_d;
 	reg [8:0] rc, rc_d;
-	reg in_overflow, in_overflow_d;
 	reg f_set, f_set_d;
 
 	enum reg [4:0] {
@@ -109,12 +108,10 @@ module perm_blk (
 		roundc_d = roundc;
 		rcnum_d = rcnum;
 		rc_d = rc;
-		in_overflow_d = in_overflow;
 		f_set_d = f_set;
 //		$display("---x:%b y:%b DATA:%h STOP:%b 1st:%b DIN:%h%t", m1wx, m1wy, m1wd, stopin, firstin, din, $time);
 		case (current_state)
 			IDLE: begin
-				in_overflow_d = 0;
 				f_set_d = 1;
 				if (pushin && firstin) begin
 					stopin = 0;
@@ -128,20 +125,20 @@ module perm_blk (
 					m3wd_d = 0; // CLEANING DATA IN M3
 					next_state = DATA_IN;
 				end
-//				$display("%b %h%t", firstin, din, $time);
+				$display("[PERM] 1st%b x%b y%b DIN:%h%t", firstin, m1wx_d, m1wy_d, din, $time);
 			end
 			DATA_IN: begin
 //				$display("---pushin:%b m1x:%b m1y:%b D:%h", pushin, m1wx, m1wy, m1wd);
-				in_overflow_d = 0;
 				if (pushin) begin
 					stopin = 0;
-					if (firstin) begin
-//						$display("SET2 %h%t", din, $time);
-//						$display("1x %b 1y %b", m1wx, m1wy);
-						m4wr_d = 1;
-						m4wd_d = din;
-						in_overflow_d = 1;
-//						$display("OVERFLOW %h x%b y%b%t\n", din, m4wx_d, m4wy_d, $time);
+					m1wx_d = m1wx + 3'b001;
+					m2wx_d = m2wx + 3'b001;
+					m3wx_d = m3wx + 3'b001;
+					if (m1wx == 3'b100) begin
+						m1wy_d = m1wy + 3'b001;
+						m2wy_d = m2wy + 3'b001;
+						m3wy_d = m3wy + 3'b001;
+						if (m1wy == 3'b100) begin
 							m1wx_d = 0;
 							m1wy_d = 0;
 							m2wx_d = 0;
@@ -152,54 +149,31 @@ module perm_blk (
 							m2wr_d = 0;
 							m3wr_d = 0;
 							stopin = 1; 
-//							$display("din %h THETAC %t", din, $time);
 							next_state = THETA_C;
-					end
-					else begin
-						m1wx_d = m1wx + 3'b001;
-						m2wx_d = m2wx + 3'b001;
-						m3wx_d = m3wx + 3'b001;
-						if (m1wx == 3'b100) begin
-							m1wy_d = m1wy + 3'b001;
-							m2wy_d = m2wy + 3'b001;
-							m3wy_d = m3wy + 3'b001;
-							if (m1wy == 3'b100) begin
-								m1wx_d = 0;
-								m1wy_d = 0;
-								m2wx_d = 0;
-								m2wy_d = 0;
-								m3wx_d = 0;
-								m3wy_d = 0;
-								m1wr_d = 0;
-								m2wr_d = 0;
-								m3wr_d = 0;
-								stopin = 1; 
-								next_state = THETA_C;
-							end
-							else begin
-								m1wx_d = 3'b000;
-								m1wr_d = 1;
-								m1wd_d = din;
-								m2wx_d = 3'b000;
-								m2wr_d = 1;
-								m2wd_d = 64'b0;
-								m3wx_d = 3'b000;
-								m3wr_d = 1;
-								m3wd_d = 64'b0;
-//								$display("%b %h %h %b %b", firstin, din, m2wd, m2wx, m2wy);
-							end
 						end
 						else begin
-//							if (m1wx==3'b010 && m1wy==3'b100)  //STOP INPUT BEFORE 100/100
-//								stopin = 1;
+							m1wx_d = 3'b000;
 							m1wr_d = 1;
 							m1wd_d = din;
+							m2wx_d = 3'b000;
 							m2wr_d = 1;
 							m2wd_d = 64'b0;
+							m3wx_d = 3'b000;
 							m3wr_d = 1;
 							m3wd_d = 64'b0;
-//							$display("%b %h %h %b %b", firstin, din, m2rd, m2wd, m2wy);
+							$display("[PERM] 1st%b x%b y%b DIN:%h%t", firstin, m1wx_d, m1wy_d, din, $time);
 						end
+					end
+					else begin
+//						if (m1wx==3'b010 && m1wy==3'b100)  //STOP INPUT BEFORE 100/100
+//							stopin = 1;
+						m1wr_d = 1;
+						m1wd_d = din;
+						m2wr_d = 1;
+						m2wd_d = 64'b0;
+						m3wr_d = 1;
+						m3wd_d = 64'b0;
+						$display("[PERM] 1st%b x%b y%b DIN:%h%t", firstin, m1wx_d, m1wy_d, din, $time);
 					end
 //					$display("x:%b y:%b m1:%h%t", m1wx, m1wy, m1wd, $time);
 				end
@@ -220,7 +194,6 @@ module perm_blk (
 //					$display("round:%d x:%b y:%b m1rd:%h | 2x:%b 2y:%b m2rd:%h 2wr:%b| TH[%b]:%h%t", roundc, m1rx, m1ry, m1rd, m2rx, m2ry, m2rd, m2wr, m1rx, theta_c[m1rx], $time);
 //////////////////////////////// CHECK THETA_C				
 //				$display("theta[%b] %h | vm2wd %h | x%b y%b m2rd %h | m1rd %h%t", m1rx, theta_c[m1rx], m2wd_d, m2rx, m2ry, m2rd, m1rd, $time);
-				m4wr_d = 0;
 				if ((m1ry!=3'b100 && roundc==0) || (roundc!=0) || (f_set==0)) begin
 					theta_c[m1rx] = m2rd ^ m1rd;
 				end
@@ -741,7 +714,7 @@ module perm_blk (
 					pushout = 0;
 				end
 /////////////////////////////// OUTPUT				
-				$display("1st %b OUT %h%t", firstout, dout, $time);
+				$display("PERM OUT 1st%b pushout%b OUT:%h%t", firstout, pushout, dout, $time);
 			end
 //			BUFFER_7: begin
 //				if (m1rx!=0 || m1ry!=0) begin
@@ -752,29 +725,7 @@ module perm_blk (
 //			end
 			BUFFER_8: begin
 				pushout = 0;
-				next_state = OVERFLOW;
-			end
-			OVERFLOW: begin
-				if (in_overflow) begin
-//					$display("M4 %h%t", m4rd, $time);
-					m1wx_d = 3'b000;
-					m1wy_d = 3'b000;
-					m1wr_d = 1;
-					m1wd_d = m4rd; // WRITE DATA TO INPUT BUFFER
-					m2wr_d = 1;
-					m2wd_d = 0; // CLEANING DATA IN M2
-					m3wr_d = 1;
-					m3wd_d = 0; // CLEANING DATA IN M3
-//				m1wx_d = m1wx + 3'b001;
-//				m2wx_d = m2wx + 3'b001;
-//				m3wx_d = m3wx + 3'b001;
-					stopin = 0;
-					f_set_d = 0;
-					next_state = DATA_IN;
-				end
-				else begin
-					next_state = IDLE;
-				end
+				next_state = IDLE;
 			end
 /*			BUFFER_9: begin
 				m1wx_d = m1wx + 3'b001;
@@ -825,40 +776,38 @@ module perm_blk (
 			roundc <= 0;
 			rcnum <= 0;
 			rc <= 0;
-			in_overflow <= 0;
 			f_set <= 0;
 		end
 		else begin
-			current_state <= #1 next_state;
-			m1wx <= #1 m1wx_d;
-			m1wy <= #1 m1wy_d;
-			m1wr <= #1 m1wr_d;
-			m1wd <= #1 m1wd_d;
-			m1rx <= #1 m1rx_d;
-			m1ry <= #1 m1ry_d;
-			m2wx <= #1 m2wx_d;
-			m2wy <= #1 m2wy_d;
-			m2wr <= #1 m2wr_d;
-			m2wd <= #1 m2wd_d;
-			m2rx <= #1 m2rx_d;
-			m2ry <= #1 m2ry_d;
-			m3wx <= #1 m3wx_d;
-			m3wy <= #1 m3wy_d;
-			m3wr <= #1 m3wr_d;
-			m3wd <= #1 m3wd_d;
-			m3rx <= #1 m3rx_d;
-			m3ry <= #1 m3ry_d;
-			m4wx <= #1 m4wx_d;
-			m4wy <= #1 m4wy_d;
-			m4wr <= #1 m4wr_d;
-			m4wd <= #1 m4wd_d;
-			m4rx <= #1 m4rx_d;
-			m4ry <= #1 m4ry_d;
-			roundc <= #1 roundc_d;
-			rcnum <= #1 rcnum_d;
-			rc <= #1 rc_d;
-			in_overflow <= #1 in_overflow_d;
-			f_set <= #1 f_set_d;
+			current_state <= next_state;
+			m1wx <= m1wx_d;
+			m1wy <= m1wy_d;
+			m1wr <= m1wr_d;
+			m1wd <= m1wd_d;
+			m1rx <= m1rx_d;
+			m1ry <= m1ry_d;
+			m2wx <= m2wx_d;
+			m2wy <= m2wy_d;
+			m2wr <= m2wr_d;
+			m2wd <= m2wd_d;
+			m2rx <= m2rx_d;
+			m2ry <= m2ry_d;
+			m3wx <= m3wx_d;
+			m3wy <= m3wy_d;
+			m3wr <= m3wr_d;
+			m3wd <= m3wd_d;
+			m3rx <= m3rx_d;
+			m3ry <= m3ry_d;
+			m4wx <= m4wx_d;
+			m4wy <= m4wy_d;
+			m4wr <= m4wr_d;
+			m4wd <= m4wd_d;
+			m4rx <= m4rx_d;
+			m4ry <= m4ry_d;
+			roundc <= roundc_d;
+			rcnum <= rcnum_d;
+			rc <= rc_d;
+			f_set <= f_set_d;
 		end
 	end
 

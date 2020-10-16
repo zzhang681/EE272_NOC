@@ -284,7 +284,7 @@ module noc_intf (
 				READ_RESP: begin
 					if (Dlen_cnt) begin
 						noc_from_dev_data_d = data_perm.Dev[data_perm_index]; 
-						$display("RD RSP to NOC[%d] = %b%t", data_perm_index, noc_from_dev_data_d, $time);
+						$display("RD RSP to NOC[%d] = %h%t", data_perm_index, noc_from_dev_data_d, $time);
 						Dlen_cnt_d = Dlen_cnt - 1;
 						if (data_perm_index != 199) begin
 							data_perm_index_d = data_perm_index + 1;

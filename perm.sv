@@ -45,7 +45,7 @@ module perm_blk (
 	reg [5:0] roundc, roundc_d;
 	reg [2:0] rcnum, rcnum_d;
 	reg [8:0] rc, rc_d;
-	reg f_set, f_set_d;
+//	reg f_set, f_set_d;
 	reg [63:0] temp_din; // for unexpected pulses during DIN
 	reg temp_flag;
 
@@ -110,12 +110,12 @@ module perm_blk (
 		roundc_d = roundc;
 		rcnum_d = rcnum;
 		rc_d = rc;
-		f_set_d = f_set;
+//		f_set_d = f_set;
 //		$display("---x:%b y:%b DATA:%h STOP:%b 1st:%b DIN:%h%t", m1wx, m1wy, m1wd, stopin, firstin, din, $time);
 		case (current_state)
 			IDLE: begin
 				$display("DIN%h%t", din, $time);
-				f_set_d = 1;
+//				f_set_d = 1;
 				if (pushin && firstin) begin
 					stopin = 0;
 					m1wx_d = 3'b000;
@@ -186,7 +186,7 @@ module perm_blk (
 						m3wd_d = 64'b0;
 //						$display("[PERM] 1st%b x%b y%b DIN:%h%t", firstin, m1wx, m1wy, m1wd, $time);
 					end
-					$display("[PERM] x:%b y:%b m1:%h%t", m1wx, m1wy, m1wd, $time);
+//					$display("[PERM] x:%b y:%b m1:%h%t", m1wx, m1wy, m1wd, $time);
 				end
 				else begin
 					m2rx_d = 0;
@@ -196,7 +196,7 @@ module perm_blk (
 					m2wr_d = 1;
 					next_state = THETA_C;
 				end
-//				$display("M1 %b %b %h", m1wx, m1wy, m1wd);
+				$display("[PERM] M1 %b %b %h pushin:%b NEXT %s%t", m1wx_d, m1wy_d, m1wd_d, pushin, next_state, $time);
 			end
 			THETA_C: begin
 //				$display("M1 x%b y%b | %b%t", m1rx, m1ry, m1rd, $time);
@@ -205,9 +205,9 @@ module perm_blk (
 //					$display("round:%d x:%b y:%b m1rd:%h | 2x:%b 2y:%b m2rd:%h 2wr:%b| TH[%b]:%h%t", roundc, m1rx, m1ry, m1rd, m2rx, m2ry, m2rd, m2wr, m1rx, theta_c[m1rx], $time);
 //////////////////////////////// CHECK THETA_C				
 //				$display("theta[%b] %h | vm2wd %h | x%b y%b m2rd %h | m1rd %h%t", m1rx, theta_c[m1rx], m2wd_d, m2rx, m2ry, m2rd, m1rd, $time);
-				if ((m1ry!=3'b100 && roundc==0) || (roundc!=0) || (f_set==0)) begin
+//				if ((m1ry!=3'b100 && roundc==0) || (roundc!=0)) begin
 					theta_c[m1rx] = m2rd ^ m1rd;
-				end
+//				end
 				m2wr_d = 1;
 				m2wd_d = theta_c[m1rx];
 				next_state = BUFFER_1;
@@ -787,7 +787,7 @@ module perm_blk (
 			roundc <= 0;
 			rcnum <= 0;
 			rc <= 0;
-			f_set <= 0;
+//			f_set <= 0;
 			temp_din <= 0;
 			temp_flag <= 0;
 		end
@@ -820,7 +820,7 @@ module perm_blk (
 			roundc <= roundc_d;
 			rcnum <= rcnum_d;
 			rc <= rc_d;
-			f_set <= f_set_d;
+//			f_set <= f_set_d;
 		end
 	end
 

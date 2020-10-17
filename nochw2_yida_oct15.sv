@@ -275,7 +275,7 @@ module noc_intf (
 						5: begin // Stopin Message
 							noc_from_dev_data_d = 8'b00000101;
 							next_state_s = DEST_S;
-//							$display("\nSTOPIN 1 -> 0\n");
+							$display("MSG STIN %b CTL%b%t", noc_from_dev_data_d, noc_from_dev_ctl_d, $time);
 						end
 					endcase
 				end
@@ -322,7 +322,7 @@ module noc_intf (
 				SRC_S: begin
 					noc_from_dev_ctl_d = 0;
 					noc_from_dev_data_d = Dest_ID;  /////////////////////
-//					$display("\n Send Message %d\n", send_msg);
+					$display("\n Send Message %d\n", send_msg);
 					if (send_msg == 1) begin
 						Msg_addr_d = 8'h42;
 						Resp_data_d = 8'h78;
@@ -394,7 +394,7 @@ module noc_intf (
 				//////// WRITE TO PERM
 				$display("WRITE TO PERM stopin%b first%b pushin%b pushout%b data[%d] = %h%t", stopin, firstin_d, pushin_d, pushout, perm_index, din_d, $time);
 				perm_index_d = perm_index + 1;
-				if (perm_index == 24) begin
+				if (perm_index == 25) begin
 					write_perm_d = 0;
 					pushin_d = 0;
 					din_d = 0;

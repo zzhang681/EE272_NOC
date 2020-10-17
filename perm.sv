@@ -46,6 +46,8 @@ module perm_blk (
 	reg [2:0] rcnum, rcnum_d;
 	reg [8:0] rc, rc_d;
 	reg f_set, f_set_d;
+	reg [63:0] temp_din; // for unexpected pulses during DIN
+	reg temp_flag;
 
 	enum reg [4:0] {
 		IDLE,
@@ -112,23 +114,32 @@ module perm_blk (
 //		$display("---x:%b y:%b DATA:%h STOP:%b 1st:%b DIN:%h%t", m1wx, m1wy, m1wd, stopin, firstin, din, $time);
 		case (current_state)
 			IDLE: begin
+				$display("DIN%h%t", din, $time);
 				f_set_d = 1;
 				if (pushin && firstin) begin
 					stopin = 0;
 					m1wx_d = 3'b000;
 					m1wy_d = 3'b000;
 					m1wr_d = 1;
-					m1wd_d = din; // WRITE DATA TO INPUT BUFFER
+					if (!temp_flag) begin
+						temp_din = din; // WRITE DATA TO INPUT BUFFER
+						temp_flag = 1;
+					end
+					else begin
+						m1wd_d = temp_din;
+					end
 					m2wr_d = 1;
 					m2wd_d = 0; // CLEANING DATA IN M2
 					m3wr_d = 1;
 					m3wd_d = 0; // CLEANING DATA IN M3
 					next_state = DATA_IN;
 				end
-				$display("[PERM] 1st%b x%b y%b DIN:%h%t", firstin, m1wx_d, m1wy_d, din, $time);
+				$display("[PERM] 1st%b x%b y%b DIN:%h%t", firstin, m1wx_d, m1wy_d, m1wd_d, $time);
 			end
 			DATA_IN: begin
 //				$display("---pushin:%b m1x:%b m1y:%b D:%h", pushin, m1wx, m1wy, m1wd);
+				temp_din = 0;
+				temp_flag = 0;
 				if (pushin) begin
 					stopin = 0;
 					m1wx_d = m1wx + 3'b001;
@@ -161,7 +172,7 @@ module perm_blk (
 							m3wx_d = 3'b000;
 							m3wr_d = 1;
 							m3wd_d = 64'b0;
-							$display("[PERM] 1st%b x%b y%b DIN:%h%t", firstin, m1wx_d, m1wy_d, din, $time);
+//							$display("[PERM] 1st%b x%b y%b DIN:%h%t", firstin, m1wx, m1wy, m1wd, $time);
 						end
 					end
 					else begin
@@ -173,9 +184,9 @@ module perm_blk (
 						m2wd_d = 64'b0;
 						m3wr_d = 1;
 						m3wd_d = 64'b0;
-						$display("[PERM] 1st%b x%b y%b DIN:%h%t", firstin, m1wx_d, m1wy_d, din, $time);
+//						$display("[PERM] 1st%b x%b y%b DIN:%h%t", firstin, m1wx, m1wy, m1wd, $time);
 					end
-//					$display("x:%b y:%b m1:%h%t", m1wx, m1wy, m1wd, $time);
+					$display("[PERM] x:%b y:%b m1:%h%t", m1wx, m1wy, m1wd, $time);
 				end
 				else begin
 					m2rx_d = 0;
@@ -777,6 +788,8 @@ module perm_blk (
 			rcnum <= 0;
 			rc <= 0;
 			f_set <= 0;
+			temp_din <= 0;
+			temp_flag <= 0;
 		end
 		else begin
 			current_state <= next_state;

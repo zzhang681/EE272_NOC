@@ -37,8 +37,9 @@ module noc_intf (
 	} current_state_s, next_state_s;
 
 	// I/O Buffer
-	reg noc_from_dev_ctl_d, pushin_d, firstin_d, stopout_d;
+	reg noc_from_dev_ctl_d;
 	reg [7:0] noc_from_dev_data_d;
+	reg pushin_d, firstin_d, stopout_d;
 	reg [63:0] din_d;
 
 	// Address and Data length
@@ -59,7 +60,7 @@ module noc_intf (
 		reg [199:0][7:0] Dev; // Interface data
 		reg [24:0][63:0] Per; // To/from Perm block
 	} data_noc, data_noc_d, data_perm, data_perm_d;
-	reg [7:0] data_noc_index, data_noc_index_d, data_perm_index, data_perm_index_d;
+	reg [7:0] data_in_index, data_in_index_d, data_out_index, data_out_index_d; // IN/OUT to the Interface
 	reg data_full, data_full_d; // Indicate a full set of 200 byte data
 
 	// Perm Control
@@ -114,8 +115,8 @@ module noc_intf (
 		Addr_index_d = Addr_index;
 		data_noc_d = data_noc;
 		data_perm_d = data_perm;
-		data_noc_index_d = data_noc_index;
-		data_perm_index_d = data_perm_index;
+		data_in_index_d = data_in_index;
+		data_out_index_d = data_out_index;
 		data_full_d = data_full;
 		write_perm_d = write_perm;
 		read_perm_d = read_perm;
@@ -154,12 +155,12 @@ module noc_intf (
 			end
 			WRITE: begin
 				if (~data_full) begin
-					data_noc_d.Dev[data_noc_index] = noc_to_dev_data;
-					data_noc_index_d = data_noc_index + 1;
+					data_noc_d.Dev[data_in_index] = noc_to_dev_data;
+					data_in_index_d = data_in_index + 1;
 					Actual_data_d = Actual_data + 1; // Count the actual data length
 				end
-				if (data_noc_index == 199) begin
-					data_noc_index_d = 0;
+				if (data_in_index == 199) begin
+					data_in_index_d = 0;
 					data_full_d = 1;
 					write_perm_d = 1;
 					Actual_data_d = Actual_data + 1;
@@ -175,7 +176,7 @@ module noc_intf (
 					send_msg_d = 3; // Write Response
 					next_state_r = IDLE_R;
 				end
-				$display("write_perm:%b  WRITEDATA[%d] = %b%t", write_perm, data_noc_index, data_noc_d.Dev[data_noc_index], $time);
+				$display("write_perm:%b  WRITEDATA[%d] = %b%t", write_perm, data_in_index, data_noc_d.Dev[data_in_index], $time);
 			end
 			MSG_R: begin
 				$display("MSG STATE%t", $time);
@@ -237,6 +238,8 @@ module noc_intf (
 	// State Machine for SENDING DATA
 	always @ (posedge clk) begin
 		next_state_s = current_state_s;
+		noc_from_dev_ctl_d = 1;
+		noc_from_dev_data_d = 0;
 		if (send_msg) begin
 			//////// Routing responses
 //			$display("-----------send msg %b %b", send_msg, current_state_s);
@@ -244,37 +247,32 @@ module noc_intf (
 				IDLE_S: begin
 					case (send_msg)
 						1: begin // Message
-							noc_from_dev_ctl_d = 1;
 							noc_from_dev_data_d = 8'b00000101;
 							next_state_s = DEST_S;
 							$display("MSG ALDL %b%t", noc_from_dev_data_d, $time);
 						end
 						2: begin // Read Response
-							if (data_perm_index+Dlen_cnt > 200) begin // Partial if the data index exceeds 200
+							if (data_out_index+Dlen_cnt > 200) begin // Partial if the data index exceeds 200
 								rc_d = 2'b10;
 							end	
 							else begin
 								rc_d = 2'b00;
 							end
-							noc_from_dev_ctl_d = 1;
 							noc_from_dev_data_d = {rc, 6'b000011};
 							next_state_s = DEST_S;
 							$display("READ RESP RC %b%t", noc_from_dev_data_d, $time);
 						end
 						3: begin // Write Response
-							noc_from_dev_ctl_d = 1;
 							noc_from_dev_data_d = {rc, 6'b000100};
 							next_state_s = DEST_S;
 							$display("WR RSP RC %b%t", noc_from_dev_data_d, $time);
 						end
 						4: begin // Pushout Message
-							noc_from_dev_ctl_d = 1;
 							noc_from_dev_data_d = 8'b00000101;
 							next_state_s = DEST_S;
-							$display("MSG POUT %b%t", noc_from_dev_data_d, $time);
+							$display("MSG POUT %b CTL%b%t", noc_from_dev_data_d, noc_from_dev_ctl_d, $time);
 						end
 						5: begin // Stopin Message
-							noc_from_dev_ctl_d = 1;
 							noc_from_dev_data_d = 8'b00000101;
 							next_state_s = DEST_S;
 //							$display("\nSTOPIN 1 -> 0\n");
@@ -282,28 +280,34 @@ module noc_intf (
 					endcase
 				end
 				READ_RESP: begin
+					noc_from_dev_ctl_d = 0;
 					if (Dlen_cnt) begin
-						noc_from_dev_data_d = data_perm.Dev[data_perm_index]; 
-						$display("RD RSP to NOC[%d] = %h%t", data_perm_index, noc_from_dev_data_d, $time);
+						noc_from_dev_data_d = data_perm.Dev[data_out_index]; 
+						$display("RD RSP to NOC[%d] = %h%t", data_out_index, noc_from_dev_data_d, $time);
 						Dlen_cnt_d = Dlen_cnt - 1;
-						if (data_perm_index != 199) begin
-							data_perm_index_d = data_perm_index + 1;
+						if (data_out_index != 199) begin
+							data_out_index_d = data_out_index + 1;
 						end
 						else begin
-							data_perm_index_d = 0;
+							data_out_index_d = 0;
 						end
 					end
 					else begin
+						noc_from_dev_ctl_d = 1;
+						noc_from_dev_data_d = 0;
+						send_msg_d = 0;
 						next_state_s = IDLE_S;
 					end
 				end
 				MSGADDR: begin
-//					noc_from_dev_data_d = 0; // UNCERTAIN
+					noc_from_dev_ctl_d = 0;
+//					noc_from_dev_data = 0; // UNCERTAIN
 					noc_from_dev_data_d = Msg_addr;
 					next_state_s = MSGDATA;
 					$display("MSG ADDR %b%t", noc_from_dev_data_d, $time);
 				end
 				MSGDATA: begin
+					noc_from_dev_ctl_d = 0;
 					noc_from_dev_data_d = Resp_data;
 					send_msg_d = 0;
 					next_state_s = IDLE_S;
@@ -313,9 +317,10 @@ module noc_intf (
 					noc_from_dev_ctl_d = 0;
 					noc_from_dev_data_d = Src_ID; /////////////////////
 					next_state_s = SRC_S;
-					$display("WR RESP DE %b%t", noc_from_dev_data_d, $time);
+					$display("WR RESP DE %b CTL%b%t", noc_from_dev_data_d, noc_from_dev_ctl_d, $time);
 				end
 				SRC_S: begin
+					noc_from_dev_ctl_d = 0;
 					noc_from_dev_data_d = Dest_ID;  /////////////////////
 //					$display("\n Send Message %d\n", send_msg);
 					if (send_msg == 1) begin
@@ -337,6 +342,7 @@ module noc_intf (
 					$display("WR RESP SO %b%t", noc_from_dev_data_d, $time);
 				end
 				DLENGTH_S: begin
+					noc_from_dev_ctl_d = 0;
 					rc_d = 0;
 					if (send_msg == 2) begin  // READ RESP
 						if (Actual_data+Dlen_cnt > 200) begin
@@ -363,6 +369,7 @@ module noc_intf (
 					end
 				end
 			endcase
+//			$display("\n%b %b\n", noc_from_dev_ctl_d, noc_from_dev_data_d);
 		end
 	end
 
@@ -400,18 +407,18 @@ module noc_intf (
 //			stopout_d = 0;
 			if (firstout && pushout) begin
 				$display("\nFIIIIIIIIIIIIIIRSTTTTTTTTTTTTTTTTTOUTTTTTTTTTTTTTT\n");
-				data_perm_d.Per[data_perm_index] = dout;
-				$display("firstout%b pushout%b READ FROM PERM [%d]: %h%t", firstout, pushout, data_perm_index, dout, $time);
-				data_perm_index_d = data_perm_index + 1;
+				data_perm_d.Per[data_in_index] = dout;
+				$display("READ FROM PERM firstout%b pushout%b [%d]: %h%t", firstout, pushout, data_in_index, dout, $time);
+				data_in_index_d = data_in_index + 1;
 			end
 			else if (pushout) begin
-				data_perm_d.Per[data_perm_index] = dout;
-				$display("firstout%b pushout%b READ FROM PERM [%d]: %h%t", firstout, pushout, data_perm_index, dout, $time);
-				data_perm_index_d = data_perm_index + 1;
-				if (data_perm_index == 24) begin // PERM READ COMPLETE
+				data_perm_d.Per[data_in_index] = dout;
+				$display("READ FROM PERM firstout%b pushout%b [%d]: %h%t", firstout, pushout, data_in_index, dout, $time);
+				data_in_index_d = data_in_index + 1;
+				if (data_in_index == 24) begin // PERM READ COMPLETE
 					read_perm_d = 0;
 					stopout_d = 1;
-					data_perm_index_d = 0;
+					data_in_index_d = 0;
 					perm_busy_d = 0;
 				end
 			end
@@ -425,7 +432,7 @@ int i = 41;
 		if (rst) begin
 			current_state_r <= IDLE_R;
 			current_state_s <= IDLE_S;
-			noc_from_dev_ctl <= 0;
+			noc_from_dev_ctl <= 1;
 			pushin <= 0;
 			firstin <= 0;
 			stopout <= 1;
@@ -441,8 +448,8 @@ int i = 41;
 			Addr_index <= 0;
 			data_noc <= 0;
 			data_perm <= 0;
-			data_noc_index <= 0;
-			data_perm_index <= 0;
+			data_in_index <= 0;
+			data_out_index <= 0;
 			data_full <= 0;
 			write_perm <= 0;
 			read_perm <= 0;
@@ -459,10 +466,10 @@ int i = 41;
 			current_state_r <= next_state_r;
 			current_state_s <= next_state_s;
 			noc_from_dev_ctl <= noc_from_dev_ctl_d;
+			noc_from_dev_data <= noc_from_dev_data_d;
 			pushin <= pushin_d;
 			firstin <= firstin_d;
 			stopout <= stopout_d;
-			noc_from_dev_data <= noc_from_dev_data_d;
 			din <= din_d;
 			Alen <= Alen_d;
 			Alen_cnt <= Alen_cnt_d;
@@ -474,8 +481,8 @@ int i = 41;
 			Addr_index <= Addr_index_d;
 			data_noc <= data_noc_d;
 			data_perm <= data_perm_d;
-			data_noc_index <= data_noc_index_d;
-			data_perm_index <= data_perm_index_d;
+			data_in_index <= data_in_index_d;
+			data_out_index <= data_out_index_d;
 			data_full <= data_full_d;
 			write_perm <= write_perm_d;
 			read_perm <= read_perm_d;

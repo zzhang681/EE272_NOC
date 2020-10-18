@@ -727,7 +727,7 @@ module perm_blk (
 					pushout = 0;
 				end
 /////////////////////////////// OUTPUT				
-				$display("PERM OUT 1st%b pushout%b OUT:%h%t", firstout, pushout, dout, $time);
+//				$display("PERM OUT 1st%b pushout%b OUT:%h%t", firstout, pushout, dout, $time);
 			end
 //			BUFFER_7: begin
 //				if (m1rx!=0 || m1ry!=0) begin

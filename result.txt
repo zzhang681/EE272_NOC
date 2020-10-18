@@ -1,0 +1,42 @@
+The nochw2 design is synthesizable without any latches.
+The design passes most of the testbench input cases but left a few due to running out of clock.
+Otherwise, the interface could perform functional read and write to the perm block and the NOC.
+
+-----------------------------------------------------------------
+WR RESP SO 01001000         12997935000
+DEST 01001000  SRC 01001000
+DEST 01001000  SRC 10001111
+WR RESP AL 00010000         12997936000
+Addr[000] = 10001111         12997936000
+Addr[000] = 00000000         12997936100
+Addr[001] = 00000000         12997937000
+write_perm:0  WRITEDATA[192] = 00000000         12997938000
+write_perm:0  WRITEDATA[192] = 10101011         12997938100
+write_perm:0  WRITEDATA[193] = 10101011         12997939000
+write_perm:0  WRITEDATA[193] = 11100111         12997939100
+write_perm:0  WRITEDATA[194] = 11100111         12997940000
+write_perm:0  WRITEDATA[194] = 00010000         12997940100
+write_perm:0  WRITEDATA[195] = 00010000         12997941000
+write_perm:0  WRITEDATA[195] = 10110000         12997941100
+write_perm:0  WRITEDATA[196] = 10110000         12997942000
+write_perm:0  WRITEDATA[196] = 10111110         12997942100
+write_perm:0  WRITEDATA[197] = 10111110         12997943000
+write_perm:0  WRITEDATA[197] = 00101101         12997943100
+write_perm:0  WRITEDATA[198] = 00101101         12997944000
+write_perm:0  WRITEDATA[198] = 01111001         12997944100
+write_perm:0  WRITEDATA[199] = 01111001         12997945000
+write_perm:0  WRITEDATA[199] = 01110101         12997945100
+WR RSP RC 00000100         12997947000
+WR RESP DE 10001111 CTL0         12997948000
+
+ Send Message 3
+
+WR RESP SO 01001000         12997949000
+WR RESP AL 00001000         12997950000
+ran out of clocks
+$finish called from file "tbhw2.sv", line 26.
+$finish at simulation time          13000000000
+           V C S   S i m u l a t i o n   R e p o r t
+Time: 130000000000 ps
+CPU Time:     52.250 seconds;       Data structure size:   0.0Mb
+Sun Oct 18 09:24:23 2020

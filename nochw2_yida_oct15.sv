@@ -136,13 +136,13 @@ module noc_intf (
 				if (noc_to_dev_ctl) begin
 					case (noc_to_dev_data[2:0])
 						3'b001: begin // GET READ
-							$display("\nREEEEEEEEEEEEEEEEEEEAD COMMAND GET!\n");
+							$display("\nREEEEEEEEEEEEEEEEEEEAD COMMAND GET!%t\n", $time);
 							get_r_w_d = 1;
 							AD_assignment();
 							next_state_r = DEST_R;
 						end
 						3'b010: begin // GET WRITE
-							$display("\nWRIIIIIIIIIIIIIIIIIITE COMMAND GET!\n");
+							$display("\nWRIIIIIIIIIIIIIIIIIITE COMMAND GET!%t\n", $time);
 							get_r_w_d = 2;
 							AD_assignment();
 							next_state_r = DEST_R;
@@ -176,6 +176,7 @@ module noc_intf (
 					send_msg_d = 3; // Write Response
 					next_state_r = IDLE_R;
 				end
+				///////// DATA WRITE FROM NOC
 				$display("write_perm:%b  WRITEDATA[%d] = %b%t", write_perm, data_in_index, data_noc_d.Dev[data_in_index], $time);
 			end
 			MSG_R: begin
@@ -283,6 +284,7 @@ module noc_intf (
 					noc_from_dev_ctl_d = 0;
 					if (Dlen_cnt) begin
 						noc_from_dev_data_d = data_perm.Dev[data_out_index]; 
+						///////// DATA READ RESPONSE TO NOC
 						$display("RD RSP to NOC[%d] = %h%t", data_out_index, noc_from_dev_data_d, $time);
 						Dlen_cnt_d = Dlen_cnt - 1;
 						if (data_out_index != 199) begin
@@ -290,12 +292,22 @@ module noc_intf (
 						end
 						else begin
 							data_out_index_d = 0;
+							read_perm_d = 0;
 						end
+//						if (send_msg == 5) begin
+//							send_msg_d = 1;
+//							next_state_s = IDLE_S;
+//						end
 					end
 					else begin
 						noc_from_dev_ctl_d = 1;
 						noc_from_dev_data_d = 0;
-						send_msg_d = 0;
+//						if (send_msg == 5) begin
+//							send_msg_d = 1;
+//						end
+//						else begin
+						       	send_msg_d = 0;
+//						end
 						next_state_s = IDLE_S;
 					end
 				end
@@ -331,13 +343,18 @@ module noc_intf (
 					else if (send_msg == 2) begin // Read Response
 						next_state_s = DLENGTH_S;
 					end
+					else if (send_msg==3 || (Actual_data&&send_msg==5)) begin
+						next_state_s = DLENGTH_S;
+					end
 					else if (send_msg == 4) begin
 						Msg_addr_d = 8'h17;
 						Resp_data_d = 8'h12;
 						next_state_s = MSGADDR;
 					end
-					else if (send_msg==3 || send_msg==5) begin
-						next_state_s = DLENGTH_S;
+					else if (send_msg == 5) begin
+						Msg_addr_d = 8'h42;
+						Resp_data_d = 8'h78;
+						next_state_s = MSGADDR;
 					end
 					$display("WR RESP SO %b%t", noc_from_dev_data_d, $time);
 				end
@@ -357,10 +374,7 @@ module noc_intf (
 					else begin // WRITE RESP
 						noc_from_dev_data_d = Actual_data;
 //						rc_d = 0;
-						if (send_msg == 5) begin // Send a following Message
-							send_msg_d = 1;
-						end
-						else begin
+						if (send_msg != 5) begin // Send a following STOPIN1->0 Message
 							send_msg_d = 0;
 						end
 						Actual_data_d = 0;
@@ -385,13 +399,13 @@ module noc_intf (
 
 	// PERM CONTROL
 	always @ (posedge clk) begin
-		if (write_perm) begin
+		if (write_perm && (~read_perm)) begin
 			if (~perm_busy) begin
 				stopout_d = 0;
 				firstin_d = (perm_index==0) ? 1 : 0;
 				pushin_d = 1;
 				din_d = data_noc.Per[perm_index];
-				//////// WRITE TO PERM
+				///////// WRITE TO PERM
 				$display("WRITE TO PERM stopin%b first%b pushin%b pushout%b data[%d] = %h%t", stopin, firstin_d, pushin_d, pushout, perm_index, din_d, $time);
 				perm_index_d = perm_index + 1;
 				if (perm_index == 25) begin
@@ -408,15 +422,16 @@ module noc_intf (
 			if (firstout && pushout) begin
 				$display("\nFIIIIIIIIIIIIIIRSTTTTTTTTTTTTTTTTTOUTTTTTTTTTTTTTT\n");
 				data_perm_d.Per[data_in_index] = dout;
+				///////// READ FROM PERM
 				$display("READ FROM PERM firstout%b pushout%b [%d]: %h%t", firstout, pushout, data_in_index, dout, $time);
 				data_in_index_d = data_in_index + 1;
 			end
 			else if (pushout) begin
 				data_perm_d.Per[data_in_index] = dout;
+				///////// READ FROM PERM
 				$display("READ FROM PERM firstout%b pushout%b [%d]: %h%t", firstout, pushout, data_in_index, dout, $time);
 				data_in_index_d = data_in_index + 1;
 				if (data_in_index == 24) begin // PERM READ COMPLETE
-					read_perm_d = 0;
 					stopout_d = 1;
 					data_in_index_d = 0;
 					perm_busy_d = 0;
@@ -496,7 +511,7 @@ int i = 41;
 			Msg_addr <= Msg_addr_d;
 
 			if (noc_to_dev_ctl == 1 && i!=0) begin
-				$display("ctl%b%d.COMMAND %b%t", noc_to_dev_ctl, i, noc_to_dev_data, $time);
+//				$display("ctl%b%d.COMMAND %b%t", noc_to_dev_ctl, i, noc_to_dev_data, $time);
 				i-=1;
 			end
 //			if(dout!=0)

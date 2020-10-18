@@ -114,7 +114,7 @@ module perm_blk (
 //		$display("---x:%b y:%b DATA:%h STOP:%b 1st:%b DIN:%h%t", m1wx, m1wy, m1wd, stopin, firstin, din, $time);
 		case (current_state)
 			IDLE: begin
-				$display("DIN%h%t", din, $time);
+//				$display("DIN%h%t", din, $time);
 //				f_set_d = 1;
 				if (pushin && firstin) begin
 					stopin = 0;
@@ -134,6 +134,7 @@ module perm_blk (
 					m3wd_d = 0; // CLEANING DATA IN M3
 					next_state = DATA_IN;
 				end
+				///////// DIN FOR PERM
 				$display("[PERM] 1st%b x%b y%b DIN:%h%t", firstin, m1wx_d, m1wy_d, m1wd_d, $time);
 			end
 			DATA_IN: begin
@@ -186,7 +187,8 @@ module perm_blk (
 						m3wd_d = 64'b0;
 //						$display("[PERM] 1st%b x%b y%b DIN:%h%t", firstin, m1wx, m1wy, m1wd, $time);
 					end
-//					$display("[PERM] x:%b y:%b m1:%h%t", m1wx, m1wy, m1wd, $time);
+					///////// DIN FOR PERM
+					$display("[PERM] x:%b y:%b m1:%h%t", m1wx, m1wy, m1wd, $time);
 				end
 				else begin
 					m2rx_d = 0;
@@ -196,7 +198,7 @@ module perm_blk (
 					m2wr_d = 1;
 					next_state = THETA_C;
 				end
-				$display("[PERM] M1 %b %b %h pushin:%b NEXT %s%t", m1wx_d, m1wy_d, m1wd_d, pushin, next_state, $time);
+//				$display("[PERM] M1 %b %b %h pushin:%b NEXT %s%t", m1wx_d, m1wy_d, m1wd_d, pushin, next_state, $time);
 			end
 			THETA_C: begin
 //				$display("M1 x%b y%b | %b%t", m1rx, m1ry, m1rd, $time);
@@ -515,12 +517,12 @@ module perm_blk (
 					next_state = CHI_2;
 				end
 				else begin
-					next_state = BUFFER_2;
+					next_state = BUFFER_3; ///////////////// TEST (BUFFER 2 is removable)
 				end
 			end
-			BUFFER_2: begin
-				next_state = BUFFER_3;
-			end
+//			BUFFER_2: begin
+//				next_state = BUFFER_3;
+//			end
 			BUFFER_3: begin
 				next_state = CHI_1;
 			end
@@ -544,7 +546,7 @@ module perm_blk (
 						m3rx_d = 0;
 						m3ry_d = 0;
 //						$display("%b %b %b", m2wx, m2wy, m2wd);
-						next_state = BUFFER_4;
+						next_state = BUFFER_4; //////////////////// TEST
 					end
 					else begin
 						next_state = CHI_1;
@@ -626,7 +628,7 @@ module perm_blk (
 					if (roundc < 23)
 						next_state = BUFFER_5;
 					else
-						next_state = BUFFER_6;
+						next_state = BUFFER_6; ///////////// TEST
 					m1wr_d = 1;
 					m1wd_d = m2rd ^ theta_c[0];
 					m1wx_d = 0;
@@ -646,7 +648,7 @@ module perm_blk (
 				m3wd_d = 0;
 				m3wx_d = 0;
 				m3wy_d = 0;
-				next_state = CLEAN;
+				next_state = CLEAN; ////////////////// TEST
 			end
 			BUFFER_6: begin
 				roundc_d = 0;
@@ -717,7 +719,7 @@ module perm_blk (
 						m1ry_d = m1ry + 1;
 						if (m1ry == 3'b100) begin
 							m1ry_d = 0;
-							next_state = BUFFER_8;
+							next_state = IDLE; ////////////////// TEST (BUFFER8 is removable)
 						end
 					end
 				end

@@ -1,0 +1,26 @@
+$date
+	Sun Nov  1 22:25:35 2020
+$end
+
+$version
+	Synopsys VCS version I-2014.03-2
+$end
+
+$timescale
+	1ps
+$end
+
+$comment Csum: 1 d457e83ee88c6ebb $end
+
+
+$scope module top $end
+$upscope $end
+
+$enddefinitions $end
+
+#0
+$dumpvars
+$end
+#1000005000
+$dumpoff
+$end

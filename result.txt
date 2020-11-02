@@ -1,42 +1,52 @@
-The nochw2 design is synthesizable without any latches.
-The design passes most of the testbench input cases but left a few due to running out of clock.
-Otherwise, the interface could perform functional read and write to the perm block and the NOC.
+The NOC interface passes the testbench tbhw2.sv and is also synthesizable without any latches.
+The sythesis report is at synres.txt.
+The timing report is at timing.txt.
+The area reporst is at area.txt.
 
 -----------------------------------------------------------------
-WR RESP SO 01001000         12997935000
-DEST 01001000  SRC 01001000
-DEST 01001000  SRC 10001111
-WR RESP AL 00010000         12997936000
-Addr[000] = 10001111         12997936000
-Addr[000] = 00000000         12997936100
-Addr[001] = 00000000         12997937000
-write_perm:0  WRITEDATA[192] = 00000000         12997938000
-write_perm:0  WRITEDATA[192] = 10101011         12997938100
-write_perm:0  WRITEDATA[193] = 10101011         12997939000
-write_perm:0  WRITEDATA[193] = 11100111         12997939100
-write_perm:0  WRITEDATA[194] = 11100111         12997940000
-write_perm:0  WRITEDATA[194] = 00010000         12997940100
-write_perm:0  WRITEDATA[195] = 00010000         12997941000
-write_perm:0  WRITEDATA[195] = 10110000         12997941100
-write_perm:0  WRITEDATA[196] = 10110000         12997942000
-write_perm:0  WRITEDATA[196] = 10111110         12997942100
-write_perm:0  WRITEDATA[197] = 10111110         12997943000
-write_perm:0  WRITEDATA[197] = 00101101         12997943100
-write_perm:0  WRITEDATA[198] = 00101101         12997944000
-write_perm:0  WRITEDATA[198] = 01111001         12997944100
-write_perm:0  WRITEDATA[199] = 01111001         12997945000
-write_perm:0  WRITEDATA[199] = 01110101         12997945100
-WR RSP RC 00000100         12997947000
-WR RESP DE 10001111 CTL0         12997948000
+Parsing design file 'tbhw2.sv'
+Parsing included file 'perm.sv'.
+Back to file 'tbhw2.sv'.
+Parsing included file 'm55.sv'.
+Back to file 'tbhw2.sv'.
+Parsing included file 'nochw2.sv'.
+Parsing included file 'fifo.sv'.
+Back to file 'nochw2.sv'.
+Parsing included file 'edge_det.sv'.
+Back to file 'nochw2.sv'.
+Back to file 'tbhw2.sv'.
+Top Level Modules:
+       top
+TimeScale is 1 ns / 1 ps
+Starting vcs inline pass...
+4 modules and 0 UDP read.
+        However, due to incremental compilation, only 1 module needs to be compiled.
+recompiling module noc_intf because:
+        Module parameters have been changed via defparam.
+rm -f _csrc*.so linux_scvhdl_*.so pre_vcsobj_*.so share_vcsobj_*.so
+ld -m elf_i386 -shared -o .//../simv.daidir//_csrc1.so --whole-archive _vcsobj_1_1.a  --no-whole-archive
+ld -m elf_i386 -shared -o .//../simv.daidir//_csrc0.so 5NrI_d.o 5NrIB_d.o SIM_l.o
+ld -m elf_i386 -shared -o .//../simv.daidir//pre_vcsobj_0_1.so --whole-archive pre_vcsobj_0_1.a --no-whole-archive
+ld -m elf_i386 -shared -o .//../simv.daidir//pre_vcsobj_1_1.so --whole-archive pre_vcsobj_1_1.a --no-whole-archive
+ld -m elf_i386 -shared -o .//../simv.daidir//pre_vcsobj_1_2.so --whole-archive pre_vcsobj_1_2.a --no-whole-archive
+if [ -x ../simv ]; then chmod -x ../simv; fi
+g++  -o ../simv  -m32 -m32   -Wl,-rpath-link=./ -Wl,-rpath='$ORIGIN'/simv.daidir/ -Wl,-rpath='$ORIGIN'/simv.daidir//scsim.db.dir  _csrc1.so _csrc0.so   pre_vcsobj_0_1.so pre_vcsobj_1_1.so pre_vcsobj_1_2.so  rmapats_mop.o rmapats.o rmar.o           /apps/synopsys/VCSMX_NEW/linux/lib/libzerosoft_rt_stubs.so /apps/synopsys/VCSMX_NEW/linux/lib/libvirsim.so /apps/synopsys/VCSMX_NEW/linux/lib/librterrorinf.so /apps/synopsys/VCSMX_NEW/linux/lib/libsnpsmalloc.so    /apps/synopsys/VCSMX_NEW/linux/lib/libvcsnew.so /apps/synopsys/VCSMX_NEW/linux/lib/libuclinative.so   -Wl,-whole-archive /apps/synopsys/VCSMX_NEW/linux/lib/libvcsucli.so -Wl,-no-whole-archive          /apps/synopsys/VCSMX_NEW/linux/lib/vcs_save_restore_new.o /apps/synopsys/VCSMX_NEW/linux/lib/ctype-stubs_32.a -ldl  -lc -lm -lpthread -ldl
+../simv up to date
+CPU time: .291 seconds to compile + .037 seconds to elab + .203 seconds to link
+Chronologic VCS simulator copyright 1991-2014
+Contains Synopsys proprietary information.
+Compiler version I-2014.03-2; Runtime version I-2014.03-2;  Nov  2 02:01 2020
 
- Send Message 3
 
-WR RESP SO 01001000         12997949000
-WR RESP AL 00001000         12997950000
-ran out of clocks
+
+Oh what joy, It's a happy perm block
+
+
+
 $finish called from file "tbhw2.sv", line 26.
-$finish at simulation time          13000000000
+$finish at simulation time         120683641000
            V C S   S i m u l a t i o n   R e p o r t
-Time: 130000000000 ps
-CPU Time:     52.250 seconds;       Data structure size:   0.0Mb
-Sun Oct 18 09:24:23 2020
+Time: 120683641000 ps
+CPU Time:     41.270 seconds;       Data structure size:   0.0Mb
+Mon Nov  2 02:02:11 2020
+

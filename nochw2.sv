@@ -1,5 +1,6 @@
 `include "fifo.sv"
 `include "edge_det.sv"
+
 module noc_intf(
 	input clk,
 	input rst,
@@ -16,7 +17,6 @@ module noc_intf(
 	output reg stopout,
 	input [63:0] dout
 );
-
 
 	// GET (Receiving) command/data
 	enum [3:0] {
@@ -88,7 +88,7 @@ module noc_intf(
 	// WR (30-bit) [cmd:3 | rc:2 | did:8 | sid:8 | al:8 | 0]
 	// RD (30-bit) [cmd:3 | rc:2 | did:8 | sid:8 | al:8 | 0]
 	// MSG(35-bit) [cmd:3 | 0    | did:8 | sid:8 | msgaddr:8 | msgdata:8]
-	syn_fifo #(37) f (
+	sync_fifo f (
 		.clk(clk),
 		.rst(rst),
 		.data_in(fifo_in),
@@ -114,6 +114,7 @@ module noc_intf(
 		.sig(pushout),
 		.edge_detected(rising_pushout)
 	);
+
 
 	always_ff @ (posedge clk or posedge rst) begin
 		if (rst)
@@ -160,7 +161,7 @@ module noc_intf(
 				S_id <= #1 noc_to_dev_data;	
 		end
 	end
-
+	// Decode address length
 	always_comb begin
 		exp_Alen = 0;
 		case (Alen)
@@ -170,7 +171,7 @@ module noc_intf(
 			3: exp_Alen = 8;
 		endcase
 	end
-
+	// Decode data length
 	always_comb begin
 		exp_Dlen = 0;
 		case (Dlen)
@@ -184,7 +185,7 @@ module noc_intf(
 			7: exp_Dlen = 128;
 		endcase
 	end
-
+	// Count the address number in one receiving command
 	always_ff @ (posedge clk or posedge rst) begin
 		if (rst) begin
 			Al_cnt <= #1 0;
@@ -196,9 +197,9 @@ module noc_intf(
 				Al_cnt <= #1 Al_cnt + 1;
 		end
 	end
-
+	// Get the last address in a single command
 	assign get_last_addr = (Al_cnt == exp_Alen);
-
+	// Count the number of data in one receiving command
 	always_ff @ (posedge clk or posedge rst) begin
 		if (rst) begin
 			Dl_cnt <= #1 0; 
@@ -210,9 +211,9 @@ module noc_intf(
 				Dl_cnt <= #1 Dl_cnt + 1;
 		end
 	end
-
+	// Get the last data in WRITE command
 	assign get_last_data = ((Dl_cnt == (exp_Dlen-1)) && (get_curr_state == G_W4_DATA));
-
+	// 0-199
 	always_ff @ (posedge clk or posedge rst) begin
 		if (rst)
 			actual_Dlen <= #1 0;
@@ -223,7 +224,7 @@ module noc_intf(
 				actual_Dlen <= #1 actual_Dlen + 1;
 		end
 	end
-
+	// 0-7
 	always_ff @ (posedge clk or posedge rst) begin
 		if (rst) begin
 			intf_perm_index <= #1 0;
@@ -265,7 +266,7 @@ module noc_intf(
 				pushin <= #1 0;
 		end
 	end
-
+	// 0-24
 	always_ff @ (posedge clk or posedge rst) begin
 		if (rst)
 			perm_index <= #1 0;
@@ -348,7 +349,7 @@ module noc_intf(
 				end
 			R_CMD    : 
 				case (fifo_out[36:34])
-					NOP: $display("\nFIFO ERROR\n", $time);
+//					NOP: $display("\nFIFO ERROR\n", $time);
 					WR_RSP: resp_next_state = R_W0;
 					RD_RSP: resp_next_state = R_R0;
 					MG_RSP: resp_next_state = R_M0;
@@ -434,9 +435,7 @@ module noc_intf(
 				stopout <= #1 1;
 		end
 	end
-
-//	assign stopout = (Dl_cnt_rsp[2:0]==0 && resp_curr_state==R_R4_DATA) ? 0 : 1;
-
+	// 0-199
 	always_ff @ (posedge clk or posedge rst) begin
 		if (rst)
 			actual_Dlen_rsp <= #1 0;
@@ -456,7 +455,7 @@ module noc_intf(
 				dout_r <= #1 dout;
 		end
 	end
-
+	// Count the read response data in ONE command
 	always_ff @ (posedge clk or posedge rst) begin
 		if (rst) begin
 			Dl_cnt_rsp <= #1 0; 

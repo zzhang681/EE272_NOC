@@ -1836,7 +1836,18 @@ void  hsM_0_0(UB  * pcode, scalar  val);
 void  hsM_1_0(UB  * pcode, scalar  val);
 void  hsM_2_0(UB  * pcode, scalar  val);
 void  hsM_3_0(UB  * pcode, scalar  val);
-void  hsM_4_0(UB  * pcode, scalar  val);
+void  hsM_4_0(UB  * pcode, vec32  * I841, U  I781);
+void  hsM_5_0(UB  * pcode, vec32  * I841, U  I781);
+void  hsM_6_0(UB  * pcode, vec32  * I841, U  I781);
+void  hsM_7_0(UB  * pcode, scalar  val);
+void  hsM_8_0(UB  * pcode, vec32  * I841, U  I781);
+void  hsM_9_0(UB  * pcode, scalar  val);
+void  hsM_10_0(UB  * pcode, scalar  val);
+void  hsM_11_0(UB  * pcode, scalar  val);
+void  hsM_12_0(UB  * pcode, scalar  val);
+void  hsM_13_0(UB  * pcode, scalar  val);
+void  hsM_14_0(UB  * pcode, scalar  val);
+void  hsM_15_0(UB  * pcode, scalar  val);
 void  hsG_0(struct dummyq_struct * I971, EBLK  * I972, U  I702);
 #ifdef __cplusplus
 }

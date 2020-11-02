@@ -1,0 +1,858 @@
+                                        
+                           Design Compiler Graphical 
+                                 DC Ultra (TM)
+                                  DFTMAX (TM)
+                              Power Compiler (TM)
+                                 DesignWare (R)
+                                 DC Expert (TM)
+                               Design Vision (TM)
+                               HDL Compiler (TM)
+                               VHDL Compiler (TM)
+                                  DFT Compiler
+                               Design Compiler(R)
+                                        
+              Version K-2015.06-SP5-1 for linux64 - Feb 26, 2016 
+                                        
+                    Copyright (c) 1988 - 2016 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+            or distribution of this software is strictly prohibited.
+Initializing...
+set link_library {/apps/toshiba/sjsu/synopsys/tc240c/tc240c.db_NOMIN25 /apps/synopsys/I-2013.12-SP5/libraries/syn/dw_foundation.sldb}
+/apps/toshiba/sjsu/synopsys/tc240c/tc240c.db_NOMIN25 /apps/synopsys/I-2013.12-SP5/libraries/syn/dw_foundation.sldb
+set target_library {/apps/toshiba/sjsu/synopsys/tc240c/tc240c.db_NOMIN25}
+/apps/toshiba/sjsu/synopsys/tc240c/tc240c.db_NOMIN25
+read_sverilog nochw2.sv
+Loading db file '/apps/toshiba/sjsu/synopsys/tc240c/tc240c.db_NOMIN25'
+Loading db file '/apps/synopsys/I-2013.12-SP5/libraries/syn/dw_foundation.sldb'
+Loading db file '/apps/synopsys/SYNTH/libraries/syn/gtech.db'
+Loading db file '/apps/synopsys/SYNTH/libraries/syn/standard.sldb'
+  Loading link library 'tc240c'
+  Loading link library 'gtech'
+Loading sverilog file '/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'
+Detecting input file type automatically (-rtl or -netlist).
+Reading with Presto HDL Compiler (equivalent to -rtl option).
+Running PRESTO HDLC
+Compiling source file /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv
+Opening include file fifo.sv
+Warning:  Little argument or return value checking implemented for system task or function '$time'. (VER-209)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:118: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:120: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:145: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:146: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:147: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:148: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:152: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:153: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:156: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:158: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:188: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:192: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:194: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:202: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:206: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:208: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:216: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:219: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:221: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:227: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:231: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:234: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:240: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:244: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:245: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:246: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:247: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:248: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:249: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:250: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:251: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:258: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:261: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:263: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:269: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:272: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:274: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:286: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:291: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:292: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:293: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:294: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:295: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:296: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:299: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:300: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:301: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:302: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:303: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:306: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:307: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:308: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:309: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:310: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:313: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:314: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:315: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:316: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:317: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:318: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:324: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:327: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:329: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:335: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:337: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:377: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:380: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:382: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:388: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:392: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:393: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:394: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:395: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:397: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:398: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:399: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:400: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:403: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:404: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:405: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:406: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:407: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:408: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:409: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:410: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:413: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:414: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:415: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:416: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:417: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:418: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:427: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:430: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:432: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:440: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:443: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:445: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:451: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:454: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:460: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:464: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv:466: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Opening include file edge_det.sv
+Warning:  fifo.sv:27: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  fifo.sv:29: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  fifo.sv:36: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  fifo.sv:38: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  fifo.sv:45: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  fifo.sv:49: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  fifo.sv:58: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  fifo.sv:60: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  fifo.sv:67: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  fifo.sv:71: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  fifo.sv:75: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  edge_det.sv:12: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+Warning:  edge_det.sv:14: Intraassignment delays for nonblocking assignments are ignored. (VER-130)
+
+Statistics for case statements in always block at line 123 in file
+	'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           125            |     no/auto      |
+===============================================
+
+Statistics for case statements in always block at line 162 in file
+	'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           164            |    auto/auto     |
+===============================================
+
+Statistics for case statements in always block at line 172 in file
+	'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           174            |    auto/auto     |
+===============================================
+
+Statistics for case statements in always block at line 238 in file
+	'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           243            |    auto/auto     |
+===============================================
+$display output: 
+ERROR: Request a falling stopin message and write response at the same time
+
+$display output: 
+FIFO ERROR
+00
+
+Statistics for case statements in always block at line 340 in file
+	'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           342            |    auto/auto     |
+|           348            |    auto/auto     |
+===============================================
+
+Statistics for case statements in always block at line 386 in file
+	'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           390            |    auto/auto     |
+|           402            |    auto/auto     |
+===============================================
+
+Inferred memory devices in process
+	in routine noc_intf line 116 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+| get_curr_state_reg  | Flip-flop |   4   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 143 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|      S_id_reg       | Flip-flop |   8   |  Y  | N  | Y  | N  | N  | N  | N  |
+|      Alen_reg       | Flip-flop |   2   |  Y  | N  | Y  | N  | N  | N  | N  |
+|      Dlen_reg       | Flip-flop |   3   |  Y  | N  | Y  | N  | N  | N  | N  |
+|      D_id_reg       | Flip-flop |   8   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 186 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     Al_cnt_reg      | Flip-flop |   4   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 200 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     Dl_cnt_reg      | Flip-flop |   8   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 214 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|   actual_Dlen_reg   | Flip-flop |   8   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 225 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+| intf_perm_index_reg | Flip-flop |   3   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 238 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|       din_reg       | Flip-flop |  64   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 256 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     pushin_reg      | Flip-flop |   1   |  N  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 267 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|   perm_index_reg    | Flip-flop |   5   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 284 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     fifo_in_reg     | Flip-flop |  37   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 322 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|      wr_en_reg      | Flip-flop |   1   |  N  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 333 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+| resp_curr_state_reg | Flip-flop |   4   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 375 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+================================================================================
+|    Register Name     |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+================================================================================
+| noc_from_dev_ctl_reg | Flip-flop |   1   |  N  | N  | N  | Y  | N  | N  | N  |
+================================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 386 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+=================================================================================
+|     Register Name     |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+=================================================================================
+| noc_from_dev_data_reg | Flip-flop |   8   |  Y  | N  | Y  | N  | N  | N  | N  |
+=================================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 425 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     stopout_reg     | Flip-flop |   1   |  N  | N  | N  | Y  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 438 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+| actual_Dlen_rsp_reg | Flip-flop |   8   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 449 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     dout_r_reg      | Flip-flop |  48   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine noc_intf line 458 in file
+		'/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/nochw2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|   Dl_cnt_rsp_reg    | Flip-flop |   8   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Warning:  fifo.sv:21: signed to unsigned conversion occurs. (VER-318)
+
+Inferred memory devices in process
+	in routine syn_fifo line 24 in file
+		'fifo.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|   wr_pointer_reg    | Flip-flop |   8   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine syn_fifo line 33 in file
+		'fifo.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|   rd_pointer_reg    | Flip-flop |   8   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine syn_fifo line 42 in file
+		'fifo.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    fifo_mem_reg     | Flip-flop | 2048  |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine syn_fifo line 55 in file
+		'fifo.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    data_out_reg     | Flip-flop |   8   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine syn_fifo line 64 in file
+		'fifo.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|   status_cnt_reg    | Flip-flop |   9   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Statistics for MUX_OPs
+======================================================
+| block name/line  | Inputs | Outputs | # sel inputs |
+======================================================
+|   syn_fifo/60    |  256   |    8    |      8       |
+======================================================
+
+Inferred memory devices in process
+	in routine edge_det line 10 in file
+		'edge_det.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|      sig_d_reg      | Flip-flop |   1   |  N  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Current design is now '/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/noc_intf.db:noc_intf'
+Loaded 3 designs.
+Current design is 'noc_intf'.
+noc_intf syn_fifo edge_det
+current_design noc_intf
+Current design is 'noc_intf'.
+{noc_intf}
+create_clock clk -name clk -period 23.4875000000000003
+Information: Building the design 'syn_fifo' instantiated from design 'noc_intf' with
+	the parameters "37". (HDL-193)
+Warning: Cannot find the design 'syn_fifo' in the library 'WORK'. (LBR-1)
+Warning: Unable to resolve reference 'syn_fifo' in 'noc_intf'. (LINK-5)
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+1
+set_propagated_clock clk
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+Information: set_input_delay values are added to the propagated clock skew. (TIM-113)
+1
+set_clock_uncertainty 0.25 clk
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+1
+set_propagated_clock clk
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+Information: set_input_delay values are added to the propagated clock skew. (TIM-113)
+1
+set_output_delay 0.5 -clock clk [all_outputs]
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+1
+set all_inputs_wo_rst_clk [remove_from_collection [remove_from_collection [all_inputs] [get_port clk]] [get_port rst]]
+{noc_to_dev_ctl noc_to_dev_data[7] noc_to_dev_data[6] noc_to_dev_data[5] noc_to_dev_data[4] noc_to_dev_data[3] noc_to_dev_data[2] noc_to_dev_data[1] noc_to_dev_data[0] stopin pushout firstout dout[63] dout[62] dout[61] dout[60] dout[59] dout[58] dout[57] dout[56] dout[55] dout[54] dout[53] dout[52] dout[51] dout[50] dout[49] dout[48] dout[47] dout[46] dout[45] dout[44] dout[43] dout[42] dout[41] dout[40] dout[39] dout[38] dout[37] dout[36] dout[35] dout[34] dout[33] dout[32] dout[31] dout[30] dout[29] dout[28] dout[27] dout[26] dout[25] dout[24] dout[23] dout[22] dout[21] dout[20] dout[19] dout[18] dout[17] dout[16] dout[15] dout[14] dout[13] dout[12] dout[11] dout[10] dout[9] dout[8] dout[7] dout[6] dout[5] dout[4] dout[3] dout[2] dout[1] dout[0]}
+set_driving_cell -lib_cell CND2X1 $all_inputs_wo_rst_clk
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+Warning: Design rule attributes from the driving cell will be
+	set on the port. (UID-401)
+1
+set_input_delay 0.6 -clock clk $all_inputs_wo_rst_clk
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+1
+set_output_delay 0.6 -clock clk [all_outputs]
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+1
+set_fix_hold [ get_clocks clk ]
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+1
+set_output_delay 0.3 -clock clk [all_outputs]
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+1
+set_max_delay 23.255 -from [all_inputs] -to [all_outputs]
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+1
+compile_ultra
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+Information: Performing power optimization. (PWR-850)
+Alib files are up-to-date.
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | K-2015.06-DWBB_201506.5.1 |   *     |
+| Licensed DW Building Blocks        | I-2013.12-DWBB_201312.5 |     *     |
+============================================================================
+
+Information: Sequential output inversion is enabled.  SVF file must be used for formal verification. (OPT-1208)
+
+Information: There are 54 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+Information: Uniquified 2 instances of design 'edge_det'. (OPT-1056)
+  Simplifying Design 'noc_intf'
+
+Information: Building the design 'syn_fifo' instantiated from design 'noc_intf' with
+	the parameters "37". (HDL-193)
+Warning: Cannot find the design 'syn_fifo' in the library 'WORK'. (LBR-1)
+Warning: Unable to resolve reference 'syn_fifo' in 'noc_intf'. (LINK-5)
+Loaded alib file './alib-52/tc240c.db_NOMIN25.alib'
+  Building model 'DW01_NAND2'
+Information: Ungrouping 0 of 3 hierarchies before Pass 1 (OPT-775)
+Information: State dependent leakage is now switched from on to off.
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'noc_intf'
+Information: Added key list 'DesignWare' to design 'noc_intf'. (DDB-72)
+ Implement Synthetic for 'noc_intf'.
+  Processing 'edge_det_0'
+  Processing 'edge_det_1'
+Information: Building the design 'syn_fifo' instantiated from design 'noc_intf' with
+	the parameters "37". (HDL-193)
+Warning: Cannot find the design 'syn_fifo' in the library 'WORK'. (LBR-1)
+Warning: Unable to resolve reference 'syn_fifo' in 'noc_intf'. (LINK-5)
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+Information: Input delay ('fall') on clock port 'clk' will be added to the clock's propagated skew. (TIM-112)
+Information: Input delay ('rise') on clock port 'clk' will be added to the clock's propagated skew. (TIM-112)
+Warning: Main library 'tc240c' does not specify the following unit required for power: 'Leakage Power'. (PWR-424)
+
+  Beginning Mapping Optimizations  (Ultra High effort)
+  -------------------------------
+  Mapping Optimization (Phase 1)
+
+  Beginning Constant Register Removal
+  -----------------------------------
+
+  Beginning Global Optimizations
+  ------------------------------
+  Numerical Synthesis (Phase 1)
+  Numerical Synthesis (Phase 2)
+  Global Optimization (Phase 1)
+  Global Optimization (Phase 2)
+  Global Optimization (Phase 3)
+  Global Optimization (Phase 4)
+  Global Optimization (Phase 5)
+  Global Optimization (Phase 6)
+  Global Optimization (Phase 7)
+  Global Optimization (Phase 8)
+  Global Optimization (Phase 9)
+  Global Optimization (Phase 10)
+  Global Optimization (Phase 11)
+  Global Optimization (Phase 12)
+  Global Optimization (Phase 13)
+  Global Optimization (Phase 14)
+  Global Optimization (Phase 15)
+  Global Optimization (Phase 16)
+  Global Optimization (Phase 17)
+  Global Optimization (Phase 18)
+  Global Optimization (Phase 19)
+  Global Optimization (Phase 20)
+  Global Optimization (Phase 21)
+  Global Optimization (Phase 22)
+  Global Optimization (Phase 23)
+  Global Optimization (Phase 24)
+  Global Optimization (Phase 25)
+  Global Optimization (Phase 26)
+  Global Optimization (Phase 27)
+  Global Optimization (Phase 28)
+  Global Optimization (Phase 29)
+  Global Optimization (Phase 30)
+Information: Input delay ('fall') on clock port 'clk' will be added to the clock's propagated skew. (TIM-112)
+Information: Input delay ('rise') on clock port 'clk' will be added to the clock's propagated skew. (TIM-112)
+Information: Input delay ('fall') on clock port 'clk' will be added to the clock's propagated skew. (TIM-112)
+Information: Input delay ('rise') on clock port 'clk' will be added to the clock's propagated skew. (TIM-112)
+
+  Beginning Isolate Ports
+  -----------------------
+
+  Beginning Delay Optimization
+  ----------------------------
+
+                                  TOTAL                                                            
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE   MIN DELAY 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER      COST    
+  --------- --------- --------- --------- --------- ------------------------- --------- -----------
+    0:00:04    2365.0      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2365.0      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2365.0      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2352.5      0.00       0.0      19.3                              0.0000      0.00  
+
+  Beginning WLM Backend Optimization
+  --------------------------------------
+    0:00:04    2352.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+
+
+  Beginning Design Rule Fixing  (max_capacitance)
+  ----------------------------
+
+                                  TOTAL                                                            
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE   MIN DELAY 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER      COST    
+  --------- --------- --------- --------- --------- ------------------------- --------- -----------
+    0:00:04    2335.5      0.00       0.0      19.3                              0.0000      0.00  
+  Global Optimization (Phase 31)
+  Global Optimization (Phase 32)
+  Global Optimization (Phase 33)
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+
+                                  TOTAL                                                            
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE   MIN DELAY 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER      COST    
+  --------- --------- --------- --------- --------- ------------------------- --------- -----------
+    0:00:05    2335.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2369.0      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2369.0      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2369.0      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2332.5      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2314.0      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2314.0      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2314.0      0.00       0.0       0.0                              0.0000      0.00  
+    0:00:05    2314.0      0.00       0.0       0.0                              0.0000      0.00  
+Loading db file '/apps/toshiba/sjsu/synopsys/tc240c/tc240c.db_NOMIN25'
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+Information: Building the design 'syn_fifo' instantiated from design 'noc_intf' with
+	the parameters "37". (HDL-193)
+Warning: Cannot find the design 'syn_fifo' in the library 'WORK'. (LBR-1)
+Warning: Unable to resolve reference 'syn_fifo' in 'noc_intf'. (LINK-5)
+Information: State dependent leakage is now switched from off to on.
+Warning: Main library 'tc240c' does not specify the following unit required for power: 'Leakage Power'. (PWR-424)
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+Warning: Design has unannotated black box outputs. (PWR-428)
+1
+create_clock clk -name clk -period 24.65
+Information: Building the design 'syn_fifo' instantiated from design 'noc_intf' with
+	the parameters "37". (HDL-193)
+Warning: Cannot find the design 'syn_fifo' in the library 'WORK'. (LBR-1)
+Warning: Unable to resolve reference 'syn_fifo' in 'noc_intf'. (LINK-5)
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+1
+update_timing
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+Information: Updating design information... (UID-85)
+1
+report_timing -max_paths 5 > timing.txt
+report_area > area.txt
+write -hierarchy -format verilog -output noc_interface_gates.v
+Warning: Design 'noc_intf' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+Writing verilog file '/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/noc_interface_gates.v'.
+1
+quit
+
+Thank you...

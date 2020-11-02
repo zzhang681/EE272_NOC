@@ -19,12 +19,14 @@
 -sverilog
 /apps/synopsys/VCSMX_NEW/linux/bin/vcs1
 tbhw2.sv
-76
-sysc_uni_pwd=/home/014372384@SJSUAD.SJSU.EDU/ee272/EE272_NOC
+77
+sysc_uni_pwd=/home/013962689@SJSUAD.SJSU.EDU/272/hw2/final
 cdk_dir=/apps/cadence/IC50/tools/dfII/local
-XDG_SESSION_ID=52075
-XDG_RUNTIME_DIR=/run/user/1222958248
-XDG_DATA_DIRS=/home/014372384@SJSUAD.SJSU.EDU/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+XDG_SESSION_TYPE=tty
+XDG_SESSION_ID=52289
+XDG_SESSION_CLASS=user
+XDG_RUNTIME_DIR=/run/user/1222924310
+XDG_DATA_DIRS=/home/013962689@SJSUAD.SJSU.EDU/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
 VMR_MODE_FLAG=32
 VENDOR=unknown
 VCS_MX_HOME_INTERNAL=1
@@ -34,7 +36,6 @@ VCS_ARG_ADDED_FOR_TMP=1
 VCS_ARCH=linux
 VCS_AMD_PURE32=1
 VCSMX_HOME=/apps/synopsys/VCSMX_NEW
-USE_NCSU_CDK=
 UNAME=/bin/uname
 TOOL_HOME=/apps/synopsys/VCSMX_NEW/linux
 TK_LIBRARY=/apps/synopsys/VCSMX_NEW/etc/auxx/tcllib/tk8.4/library
@@ -42,19 +43,19 @@ SYNOPSYS_SIM=/apps/synopsys/2000.12
 SYNOPSYS=/apps/synopsys
 STROOT=/apps/synopsys/TCAD
 STRELEASE=current
-STDB=/home/014372384@SJSUAD.SJSU.EDU/sentaurus
+STDB=/home/013962689@SJSUAD.SJSU.EDU/sentaurus
 SSH_TTY=/dev/pts/0
-SSH_CONNECTION=10.40.40.246 56745 130.65.179.182 22
-SSH_CLIENT=10.40.40.246 56745 22
+SSH_CONNECTION=10.40.41.77 4699 130.65.179.168 22
+SSH_CLIENT=10.40.41.77 4699 22
 SSH_ASKPASS=/usr/libexec/openssh/gnome-ssh-askpass
 SNPSLMS_LICENSE_FILE=27000@cadence3.engr.sjsu.edu:/apps/synopsys/license/current-license-key
-SKIP_CDS_DIALOG=
+SFLM_SERVER=cadence3
 SELINUX_USE_CURRENT_RANGE=
 SELINUX_ROLE_REQUESTED=
 SELINUX_LEVEL_REQUESTED=
 SCRNAME=vcs
 SCRIPT_NAME=vcs
-REMOTEHOST=10.40.40.246
+REMOTEHOST=10.40.41.77
 QTLIB=/usr/lib64/qt-3.3/lib
 QTINC=/usr/lib64/qt-3.3/include
 QTDIR=/usr/lib64/qt-3.3
@@ -66,12 +67,12 @@ MODULES_RUN_QUARANTINE=LD_LIBRARY_PATH
 MODULES_CMD=/usr/share/Modules/libexec/modulecmd.tcl
 MODULESHOME=/usr/share/Modules
 MODULEPATH_modshare=/usr/share/modulefiles:1:/usr/share/Modules/modulefiles:1:/etc/modulefiles:1
-MODULEPATH=/etc/scl/modulefiles:/etc/scl/modulefiles:/etc/scl/modulefiles:/usr/share/Modules/modulefiles:/etc/modulefiles:/usr/share/modulefiles
+MODULEPATH=/etc/scl/modulefiles:/etc/scl/modulefiles:/usr/share/Modules/modulefiles:/etc/modulefiles:/usr/share/modulefiles
 MGLS_LICENSE_FILE=17000@COE-E239-EELIC.sjsuad.sjsu.edu
 LOADEDMODULES=
 LESSOPEN=||/usr/bin/lesspipe.sh %s
 LC_ALL=C
-KRB5CCNAME=KEYRING:persistent:1222958248
+KRB5CCNAME=KEYRING:persistent:1222924310
 KDEDIRS=/usr
 IUS=/apps/cadence/INCISIVE152
 ISEROOT=/apps/synopsys/TCAD/
@@ -81,7 +82,7 @@ HOSTTYPE=x86_64-linux
 HISTCONTROL=ignoredups
 GROUP=domain users
 ENV=/usr/share/Modules/init/profile.sh
-DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1222958248/bus
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1222924310/bus
 CLS_CSD_COMPATIBILITY_LOCKING=NO
 CLS_CDSD_COMPATIBILITY_LOCKING=NO
 CDS_VHDL=/apps/cadence/INCISIVE152/tools/leapfrog
@@ -98,15 +99,15 @@ BASH_ENV=/usr/share/Modules/init/bash
 ARCH=linux
 0
 6
-1604298308 edge_det.sv
-1604298308 fifo.sv
-1604298308 nochw2.sv
-1604298308 m55.sv
-1604298308 perm.sv
-1604298308 tbhw2.sv
+1604227204 edge_det.sv
+1604311279 fifo.sv
+1604308592 nochw2.sv
+1602582632 m55.sv
+1604302522 perm.sv
+1604301529 tbhw2.sv
 4
 0 
 1410372690 /apps/synopsys/VCSMX_NEW/linux/lib/libvirsim.so
 1410372633 /apps/synopsys/VCSMX_NEW/linux/lib/librterrorinf.so
 1410372654 /apps/synopsys/VCSMX_NEW/linux/lib/libsnpsmalloc.so
-1604298335 simv.daidir
+1604311290 simv.daidir

@@ -1,15 +1,18 @@
-module syn_fifo #(parameter DATA_WIDTH = 8,
-                  parameter ADDR_WIDTH = 8,
-                  parameter RAM_DEPTH = (1 << ADDR_WIDTH))(
-input   wire                  clk      , // Clock input
-input   wire                  rst      , // Active high reset
-input   wire [DATA_WIDTH-1:0] data_in  , // Data input
-input   wire                  rd_en    , // Read enable
-input   wire                  wr_en    , // Write Enable
-output  reg  [DATA_WIDTH-1:0] data_out , // Data Output
-output  wire                  empty    , // FIFO empty
-output  wire                  full       // FIFO full
-);    
+module sync_fifo (clk, rst, data_in, rd_en, wr_en, data_out, empty, full); 
+
+parameter DATA_WIDTH = 37;
+parameter ADDR_WIDTH = 3;
+parameter RAM_DEPTH = (1 << ADDR_WIDTH);
+
+input   logic                  clk      ; // Clock input
+input   logic                  rst      ; // Active high reset
+input   logic [DATA_WIDTH-1:0] data_in  ; // Data input
+input   logic                  rd_en    ; // Read enable
+input   logic                  wr_en    ; // Write Enable
+output  logic [DATA_WIDTH-1:0] data_out ; // Data Output
+output  logic                  empty    ; // FIFO empty
+output  logic                  full     ; // FIFO full
+
 //-----------Internal variables-------------------
 reg [ADDR_WIDTH-1:0] wr_pointer;
 reg [ADDR_WIDTH-1:0] rd_pointer;

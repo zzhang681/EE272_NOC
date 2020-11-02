@@ -1,7 +1,7 @@
 #@ # 
 #@ # Running dc_shell Version K-2015.06-SP5-1 for linux64 -- Feb 26, 2016
-#@ # Date:   Sun Nov  1 22:27:17 2020
-#@ # Run by: 01437238@coe-ee-cad42.sjsuad.sjsu.edu
+#@ # Date:   Mon Nov  2 02:02:39 2020
+#@ # Run by: 01396268@coe-ee-cad28.sjsuad.sjsu.edu
 #@ 
 
 source /apps/synopsys/SYNTH/admin/setup/.synopsys_dc.setup
@@ -3800,14 +3800,15 @@ source /apps/synopsys/SYNTH/admin/setup/.synopsys_dc.setup
 #@ }
 #@ # -- End source /apps/synopsys/SYNTH/admin/setup/.synopsys_dc.setup
 
-source -echo -verbose /home/014372384@SJSUAD.SJSU.EDU/ee272/EE272_NOC/synthesis.script
-#@ # -- Starting source /home/014372384@SJSUAD.SJSU.EDU/ee272/EE272_NOC/synthesis.script
+source -echo -verbose /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/synthesis.script
+#@ # -- Starting source /home/013962689@SJSUAD.SJSU.EDU/272/hw2/final/synthesis.script
 
 #@ set link_library {/apps/toshiba/sjsu/synopsys/tc240c/tc240c.db_NOMIN25 /apps/synopsys/I-2013.12-SP5/libraries/syn/dw_foundation.sldb}
 #@ set target_library {/apps/toshiba/sjsu/synopsys/tc240c/tc240c.db_NOMIN25}
+#@ set_host_options -max_cores 4
 #@ read_sverilog nochw2.sv
 #@ current_design noc_intf
-#@ create_clock clk -name clk -period 23.4875000000000003
+#@ create_clock clk -name clk -period 5
 #@ set_propagated_clock clk
 #@ set_clock_uncertainty 0.25 clk
 #@ set_propagated_clock clk
@@ -3818,11 +3819,12 @@ source -echo -verbose /home/014372384@SJSUAD.SJSU.EDU/ee272/EE272_NOC/synthesis.
 #@ set_output_delay 0.6 -clock clk [all_outputs]
 #@ set_fix_hold [ get_clocks clk ]
 #@ set_output_delay 0.3 -clock clk [all_outputs]
-#@ set_max_delay 23.255 -from [all_inputs] -to [all_outputs]
+#@ set_max_delay 25 -from [all_inputs] -to [all_outputs]
 #@ compile_ultra
-#@ create_clock clk -name clk -period 24.65
+#@ create_clock clk -name clk -period 5
 #@ 
 #@ update_timing
-#@ report_timing -max_paths 5
-#@ write -hierarchy -format verilog -output perm_gates.v
+#@ report_timing -max_paths 5 > timing.txt
+#@ report_area > area.txt
+#@ write -hierarchy -format verilog -output noc_interface_gates.v
 #@ quit

@@ -53,7 +53,7 @@ module perm_blk(input clk, input rst, input pushin, output reg stopin,
 	
 	
 	//update cx, cy 5 by 5, y0-5 then x+1
-	task cxy55;
+	function cxy55;
 		if(cx >= 4 && cy >= 4) begin
 			cx = 0;
 			cy = 0;
@@ -63,10 +63,10 @@ module perm_blk(input clk, input rst, input pushin, output reg stopin,
 		end else begin
 			cy = y + 1;
 		end
-	endtask
+	endfunction
 	
 	//update cx, cy 5 by 5, x0-5 then y+1
-	task cyx55;
+	function cyx55;
 		if(cx >= 4 && cy >= 4) begin
 			cx = 0;
 			cy = 0;
@@ -76,7 +76,7 @@ module perm_blk(input clk, input rst, input pushin, output reg stopin,
 		end else begin
 			cx = x + 1;
 		end
-	endtask
+	endfunction
 	
 	//state logic
 	always_comb begin
